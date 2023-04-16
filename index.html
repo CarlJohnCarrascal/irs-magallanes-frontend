@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="manifest" href="/src/assets/manifiest.json">
+  <link rel="apple-touch-icon" href="/src/assets/img/icons/icon-96x96.png">
+  <meta name="apple-mobile-web-app-status-bar" content="#aa7700">
+
+  <title>IRS - Magallanes</title>
+  <style>
+    #loader {
+      border: 12px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 12px solid #444444;
+      width: 70px;
+      height: 70px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .center {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+  </style>
+  <script>
+    document.onreadystatechange = function () {
+      if (document.readyState !== "complete") {
+        document.querySelector(
+          "body").style.height = "1vh";
+        document.querySelector(
+          "body").style.visibility = "hidden";
+        document.querySelector( 
+          "#loader").style.visibility = "visible"; 
+      } else {
+        document.querySelector(
+          "#loader").style.display = "none";
+        document.querySelector(
+          "body").style.visibility = "visible";
+      }
+    };
+  </script>
+</head>
+<div style="height: 1px;">
+  <div id="loader" class="center">
+  </div>
+</div>
+<body id="page-top" class="overflow-auto h-auto">
+  <div id="app"></div>
+  <script type="module" src="/src/main.js"></script>
+
+</body>
+
+</html>

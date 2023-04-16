@@ -1,0 +1,33 @@
+types of trauma patients:
+1.	Motor vehicle accident victims
+2.	Gunshot or stab wound victims
+3.	Falls from heights
+4.	Burns (thermal or chemical)
+5.	Electrocution
+6.	Drowning or near-drowning
+7.	Sports injuries
+8.	Animal attacks
+9.	Physical assault victims
+10.	Explosions or blasts
+11.	Crush injuries (such as in building collapses or heavy machinery accidents)
+12.	Traumatic brain injuries
+13.	Spinal cord injuries
+14.	Amputations
+15.	Multiple trauma patients (those with injuries in multiple body systems)
+
+types of medical patients:
+1.	Cardiac arrest patients
+2.	Stroke patients
+3.	Diabetic emergencies (such as diabetic ketoacidosis or hypoglycemia)
+4.	Respiratory distress patients (such as those with severe asthma attacks or pneumothorax)
+5.	Seizure patients
+6.	Allergic reactions or anaphylaxis
+7.	Overdose or poisoning patients
+8.	Obstetric emergencies (such as eclampsia or placental abruption)
+9.	Gastrointestinal bleeding patients
+10.	Septic shock patients
+11.	Hypothermia or hyperthermia patients
+12.	Dehydration or electrolyte imbalances
+13.	Headaches or migraines
+14.	Cancer patients experiencing complications (such as chemotherapy-induced neutropenia or tumor lysis syndrome)
+15.	Patients with infectious diseases or pandemics (such as COVID-19 or Ebola)

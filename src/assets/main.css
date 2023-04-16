@@ -1,0 +1,42 @@
+@import 'bootstrap';
+/* @import './base.css'; */
+
+
+@import 'vendor/fontawesome-free/css/all.min.css';
+@import 'https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i';
+@import 'css/sb-admin-2.min.css';
+@import 'vendor/datatables/dataTables.bootstrap4.min.css';
+
+body{
+    min-height: 100vh;
+}
+.fs-7 {
+    font-size: 14px;
+}
+.fs-8 {
+    font-size: 12px;
+}
+.fs-9 {
+    font-size: 10px;
+}
+.fs-10 {
+    font-size: 8px;
+}
+
+.s-critical {
+    color: #91243E;
+    /* background-color: #91243E; */
+}
+.s-high {
+    color: #DD4B40;
+    /* background-color: #DD4B40; */
+}
+.s-medium {
+    color: #F18C43;
+    /* background-color: #F18C43; */
+}
+.s-low {
+    color: #F8C841;
+    /* background-color: #F8C841; */
+}
+
