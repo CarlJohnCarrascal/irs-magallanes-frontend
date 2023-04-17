@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="">
-                <DataTable :data="incidents" id="history-table" class="display" :columns="columns" :options="options"
+                <DataTable :data="incidents" id="history-table" class="table table-hover" :columns="columns" :options="options"
                     :ref="historyTable">
                 </DataTable>
             </div>
@@ -120,25 +120,31 @@ import DataTablesCore from 'datatables.net-bs5';
 
 DataTable.use(DataTablesCore);
 const columns = [
+    // {
+    //     data: 'id', 
+    //     render: function (d){
+    //         return '<input type="checkbox" class="checkbox_check">';
+    //     }
+    // },
     { data: 'report_inf.name', title: 'Informant', class: 'text-capitalize fs-8' },
     { data: 'type', title: 'Type of Accident', class: 'text-capitalize fs-8' },
     { data: 'fulllocation', title: 'Location', class: 'text-capitalize fs-8' },
     { data: 'datetime', title: 'Datetime', class: 'text-capitalize fs-8' },
     {
-        data: 'severity', title: 'Severity',
+        data: 'severity', title: 'Severity',class: 'text-center',
         render: function (d) {
             return `<span class="fs-8 fw-bold text-capitalize s-` + d + `">` + d + `</span>`
         }
     },
     {
-        data: 'status', title: 'Status', class: 'text-capitalize fs-8',
+        data: 'status', title: 'Status', class: 'text-capitalize fs-8 text-center',
         render: function (d) {
             return `<span class="fs-8 fw-bold text-capitalize">` + d + `</span>`
         }
     },
     {
         data: 'id',
-        title: '',
+        class: 'd-inline',
         sortable: false,
         render: function (o) {
             var action = `<a data-id="` + o + `" type="button" id="btn-view-detail"
@@ -146,10 +152,10 @@ const columns = [
                                     View
                                 </a>
                                 <div class="dropdown m-1">
-                                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" style="z-index: 9999999">
                                         Mark As
                                     </button>
-                                    <ul class="dropdown-menu" style="z-index: 999999">
+                                    <ul class="dropdown-menu" style="z-index: 9999">
                                         <li><a class="dropdown-item" data-id="`+ o + `" id="btn-process-item" role="button">On Process</a></li>
                                         <li><a class="dropdown-item" data-id="`+ o + `" id="btn-responding-item" role="button">Responding</a></li>
                                         <li><a class="dropdown-item" data-id="`+ o + `" id="btn-resolved-item" role="button">Resolved</a></li>
@@ -356,4 +362,9 @@ async function onConfirmDelete() {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.dropdown-menu {
+    z-index: 9999999;
+    font-size: larger;
+}
+</style>
