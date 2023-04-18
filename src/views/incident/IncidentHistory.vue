@@ -126,33 +126,33 @@ const columns = [
     //         return '<input type="checkbox" class="checkbox_check">';
     //     }
     // },
-    { data: 'report_inf.name', title: 'Informant', class: 'text-capitalize fs-8' },
-    { data: 'type', title: 'Type of Accident', class: 'text-capitalize fs-8' },
-    { data: 'fulllocation', title: 'Location', class: 'text-capitalize fs-8' },
-    { data: 'datetime', title: 'Datetime', class: 'text-capitalize fs-8' },
+    { data: 'report_inf.name', title: 'Informant', class: 'text-capitalize fs-8 text-center align-middle' },
+    { data: 'type', title: 'Type of Accident', class: 'text-capitalize fs-8 text-center align-middle' },
+    { data: 'fulllocation', title: 'Location', class: 'text-capitalize fs-8 align-middle', },
+    { data: 'datetime', title: 'Datetime', class: 'text-capitalize fs-8 align-middle' },
     {
-        data: 'severity', title: 'Severity',class: 'text-center',
+        data: 'severity', title: 'Severity',class: 'text-center fs-8 align-middle',
         render: function (d) {
-            return `<span class="fs-8 fw-bold text-capitalize s-` + d + `">` + d + `</span>`
+            return `<span class="fs-7 fw-bold text-capitalize s-` + d + `">` + d + `</span>`
         }
     },
     {
-        data: 'status', title: 'Status', class: 'text-capitalize fs-8 text-center',
+        data: 'status', title: 'Status', class: 'text-capitalize fs-8 text-center align-middle',
         render: function (d) {
             return `<span class="fs-8 fw-bold text-capitalize">` + d + `</span>`
         }
     },
     {
         data: 'id',
-        class: 'd-inline',
+        class: 'inline- align-middle',
         sortable: false,
         render: function (o) {
             var action = `<a data-id="` + o + `" type="button" id="btn-view-detail"
-                                    class="btn btn-sm btn-primary m-1">
+                                    class="btn btn-sm btn-primary m-1 fs-9">
                                     View
-                                </a>
-                                <div class="dropdown m-1">
-                                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" style="z-index: 9999999">
+                                </a>`
+                            var a =    `<div class="dropdown m-1">
+                                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle fs-9S" data-bs-toggle="dropdown" style="z-index: 9999999">
                                         Mark As
                                     </button>
                                     <ul class="dropdown-menu" style="z-index: 9999">
@@ -177,6 +177,7 @@ const options = {
 const currentFilter = ref([])
 const selectedItemRef = ref([])
 const historyTable = ref()
+const isViewOnly = ref(false)
 const customDateStart = ref()
 const customDateEnd = ref()
 

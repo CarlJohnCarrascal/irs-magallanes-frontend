@@ -31,7 +31,8 @@
                             <tr>
                                 <td class="fs-8 text-muted font-weight-bold pl-4">Time of
                                     Call:</td>
-                                <td class="fs-8 text-muted pl-2">{{ incident.report_inf.date_of + ' ' + incident.report_inf.time_of }}</td>
+                                <td class="fs-8 text-muted pl-2">{{ incident.report_inf.date_of + ' ' +
+                                    incident.report_inf.time_of }}</td>
                             </tr>
                             <tr>
                                 <td class="fs-8 text-muted font-weight-bold pl-4">Phone No.:
@@ -66,7 +67,10 @@
                                 <td class="fs-8 text-muted font-weight-bold pl-4 align-top">Member's:
                                 </td>
                                 <td class="fs-8 text-muted pl-2">
-                                    {{ incident.report_res.member.toString().replaceAll("null,","").replaceAll("[","").replaceAll("]","").replaceAll('"null"',"") }}
+                                    {{
+                                        incident.report_res.member.toString().replaceAll("null,", "").replaceAll("[",
+                                            "").replaceAll("]", "").replaceAll('"null"', "")
+                                    }}
                                     <!-- {{ incident.report_res.member }} -->
                                     <!-- <div v-for="item in incident.report_res.member">
                                         {{ item }} 
@@ -115,7 +119,7 @@
                                 <td class="fs-8 text-muted font-weight-bold pl-4 align-top">
                                     Location:</td>
                                 <td class="fs-8 text-muted pl-2 mx-auto d-none d-md-block">
-                                    {{ incident.fulllocation }}    
+                                    {{ incident.fulllocation }}
                                 </td>
                             </tr>
                             <tr>
@@ -132,7 +136,7 @@
                             </tr>
                             <tr>
                                 <td colspan="4" class="fs-8 text-muted pl-2 d-md-none pl-5">
-                                    {{ incident.description }}    
+                                    {{ incident.description }}
                                 </td>
                             </tr>
                         </tbody>
@@ -186,42 +190,75 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button v-if="!viewOnly" @click="emit('onedit')" type="button" class="btn btn-primary btn-edit-item">
-                <span>Edit</span>
-                <div class="spinner-border spinner-border-sm d-none" role="status">
-                    <span class="sr-only"></span>
+            <div class="row" v-if="!viewOnly">
+                <div class="col" v-if="userDetails.role == 'admin'">
+                    <div>
+                        <label for="">Mark Status</label>
+                        <div>
+                            <select v-model="incident.status" @change="emit('onchangestatus')"
+                                class="form-select form-select-sm text-muted" aria-label=".form-select-sm example">
+                                <option disabled>Select status of incident</option>
+                                <option value="on process">On Process</option>
+                                <option value="responding">Responding</option>
+                                <option value="resolved">Resolved</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </button>
-            <button v-if="!viewOnly" @click="emit('ondelete')" type="button" class="btn btn-danger btn-delete-item">
-                <span>Delete</span>
-                <div class="spinner-border spinner-border-sm d-none" role="status">
-                    <span class="sr-only"></span>
+            </div>
+            <div class="row m-0" v-if="!viewOnly">
+                <div class="col gap-2" v-if="vv">
+                    <button @click="emit('onedit')" type="button"
+                        class="btn btn-sm btn-primary btn-edit-item ml-1">
+                        <span>Edit</span>
+                        <div class="spinner-border spinner-border-sm d-none" role="status">
+                            <span class="sr-only"></span>
+                        </div>
+                    </button>
+                    <button @click="emit('ondelete')" type="button"
+                        class="btn btn-sm btn-danger btn-delete-item ml-1">
+                        <span>Delete</span>
+                        <div class="spinner-border spinner-border-sm d-none" role="status">
+                            <span class="sr-only"></span>
+                        </div>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-secondary ml-1" data-bs-dismiss="modal">Close</button>
                 </div>
-            </button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+
+
         </div>
     </div>
 </template>
 
 <script setup>
-import { watch,ref } from 'vue';
+import { watch, ref } from 'vue';
 import useIncident from '../../composables/incident'
+import useAccount from '../../composables/account'
 const { getIncident, incident, errors } = useIncident()
+const { getUserDetails, userDetails } = useAccount()
+
+const vv = ref(false)
 const props = defineProps({
     incidentItem: ref([]),
     viewOnly: ref(true)
 })
 
-const emit = defineEmits(['onapprove', 'ondelete', 'onedit'])
+const emit = defineEmits(['onapprove', 'ondelete', 'onedit', 'onchangestatus'])
 
 watch(() => props.incidentItem,
-  async (val) => {
-    await getIncident(val)
-    incident.value.report_res.member = incident.value.report_res.member.replaceAll('[',"").replaceAll(']',"").toString().split(',')
-    console.log(incident.value.report_res.member)
-    console.log(val, incident)
-
-  }
+    async (val) => {
+        await getIncident(val)
+        await getUserDetails()
+        incident.value.report_res.member = incident.value.report_res.member.replaceAll('[', "").replaceAll(']', "").toString().split(',')
+        console.log(incident.value.userid, userDetails.value.id, userDetails.value.role, 'admin')
+        if (incident.value.userid == userDetails.value.id || userDetails.value.role == 'admin') {
+            vv.value = true
+        } else {
+            vv.value = false
+        }
+    }
 );
 
 
