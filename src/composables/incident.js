@@ -45,7 +45,7 @@ export default function useIncident(){
     const addIncident = async (incident) => {
         await axios.post('incidents', incident)
         .then((res) => {
-            console.log(res)
+            //console.log(res)
             if(res.data.success){
                 incident.value = res.data.data
                 errors.value = []
@@ -55,11 +55,11 @@ export default function useIncident(){
         })
         .catch((err) => {
             errors.value = err.response.data.data
-            console.log(err)
+            //console.log(err)
         })
     }
     const updateIncident = async (incident) => {
-        console.log(incident)
+        //console.log(incident)
         await axios.put('incidents/' + incident.id, incident)
         .then((res) => {
             console.log(res)
@@ -72,7 +72,7 @@ export default function useIncident(){
         })
         .catch((err) => {
             errors.value = err.response.data.data
-            console.log(err)
+            //console.log(err)
         })
     }
     const updateIncidentStatus = async (status, id) => {
@@ -81,7 +81,7 @@ export default function useIncident(){
         }
         await axios.put('incident/updatestatus/' + id, status)
         .then((res) => {
-            console.log(res)
+            //console.log(res)
             if(res.data.success){
                 incident.value = res.data.data
                 errors.value = []
@@ -91,7 +91,7 @@ export default function useIncident(){
         })
         .catch((err) => {
             errors.value = err.response.data.data
-            console.log(err)
+            //console.log(err)
         })
     }
     const deleteIncident = async (id) => {
@@ -138,7 +138,6 @@ export default function useIncident(){
             errors.value = err.response
         })
     }
-    
 
     return {
         getAllIncident, getIncident, addIncident, deleteIncident, approveIncident, updateIncident, updateIncidentStatus, getAllPatient,
