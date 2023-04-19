@@ -195,7 +195,7 @@
                     <div>
                         <label for="">Mark Status</label>
                         <div>
-                            <select v-model="incident.status" @change="emit('onchangestatus')"
+                            <select v-model="incident.status" @change="emit('onchangestatus', incident.status)"
                                 class="form-select form-select-sm text-muted" aria-label=".form-select-sm example">
                                 <option disabled>Select status of incident</option>
                                 <option value="on process">On Process</option>
@@ -224,6 +224,12 @@
                     </button>
                     <button type="button" class="btn btn-sm btn-secondary ml-1" data-bs-dismiss="modal">Close</button>
                 </div>
+                <div v-else>
+                    <button type="button" class="btn btn-sm btn-secondary ml-1" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <div v-else>
+                <button type="button" class="btn btn-sm btn-secondary ml-1" data-bs-dismiss="modal">Close</button>
             </div>
 
 

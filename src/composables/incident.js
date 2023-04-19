@@ -8,19 +8,25 @@ export default function useIncident(){
     const errors = ref([])
     const patients = ref([])
 
-    const getAllIncident = async (r,t) => {
+    const getAllIncident = async (r,t, cd1 = '', cd2 = '', my = false) => {
         var form = {
             'r': r,
-            't': t
+            't': t,
+            'cd1': cd1,
+            'cd2': cd2
         }
         await axios.get('incidents',{ params: {
             'r': r,
-            't': t
+            't': t,
+            'cd1': cd1,
+            'cd2': cd2,
+            'my': my
         } })
         .then((res) => {
             if(res.data.success){
                 errors.value = []
                 incidents.value = res.data.data
+                console.log(res.data)
             }else{
                 errors.value = res.data.data
             }

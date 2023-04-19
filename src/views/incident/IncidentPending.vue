@@ -23,8 +23,16 @@
                         <option value="custom">Custom</option>
                     </select>
                 </div>
+                <div class="col-lg-6 col-md-8 col-sm-12 d-flex fs-8 mt-2">
+                    <div class="form-check">
+                        <input @change="loadIncidents" v-model="myReportOnlyChk" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label align-center" for="flexCheckDefault">
+                            My Report Only
+                        </label>
+                    </div>
+                </div>
                 <div v-if="currentFilter == 'custom'"
-                    class="col-lg-6 col-md-8 col-sm-12 d-flex justify-content-end fs-8 mt-1">
+                    class="col-lg-6 col-md-8 col-sm-12 d-flex fs-8 mt-1">
                     <div class=" input-group-sm">
                         <label for="startDate">Start</label>
                         <input @change="loadIncidents" v-model="customDateStart" id="startDate"
@@ -54,7 +62,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <IncidentDetail :incident-item="selectedItemRef" @onapprove="onConfirmApprove"
-                        @ondelete="onConfirmDelete" />
+                        @ondelete="onConfirmDelete"  @onchangestatus="changestatus"/>
                 </div>
             </div>
         </div>
@@ -206,6 +214,10 @@ const options = {
 
 const currentFilter = ref([])
 const selectedItemRef = ref([])
+const pendingTable = ref()
+const customDateStart = ref()
+const customDateEnd = ref()
+const myReportOnlyChk = ref(false)
 var selectedItem = ""
 var viewModalEl = ""
 var viewModal = ""
@@ -333,11 +345,20 @@ onMounted(async () => {
 
 async function loadIncidents() {
     if (currentFilter.value == 'custom') {
-        var d1 = Date.parse(customDateStart.value) / 1000
-        var d2 = Date.parse(customDateEnd.value) / 1000
-        await getAllIncident(currentFilter.value,'pending', d1 , d2)
+        var dd1 = new Date(customDateStart.value)
+        //dd1.setDate(dd1.getDate() - 1)
+        dd1.setHours(0,0,0,0)
+        var dd2 = new Date(customDateEnd.value)
+        //dd2.setDate(dd2.getDate() + 1)
+        dd2.setHours(24,59,59,59)
+
+        var d1 = Date.parse(dd1) / 1000
+        var d2 = Date.parse(dd2) / 1000
+        await getAllIncident(currentFilter.value,'pending', d1 , d2, myReportOnlyChk.value)
+        //console.log(currentFilter.value,'', d1 , d2, errors.value, incidents.value)
     }else{
-        await getAllIncident(currentFilter.value,'pending')
+        await getAllIncident(currentFilter.value,'pending','','',myReportOnlyChk.value)
+        //console.log(currentFilter.value,'', errors.value, incidents.value)
     }
 }
 
@@ -374,6 +395,10 @@ async function onConfirmDelete() {
     deleteToaste.show()
     viewModal.hide()
     dtpending.draw()
+}
+async function changestatus(d){
+    await updateIncidentStatus(d, selectedItemRef.value)
+    await loadIncidents()
 }
 </script>
 

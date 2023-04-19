@@ -10,7 +10,7 @@
         </div>
         <div class="card-body mt-0 pt-0">
             <div class="row mb-2 d-flex justify-content-between">
-                <div class="col-md-3 col-sm- input-group-sm">
+                <div class="col input-group-sm">
                     <label for="filter" class="form-label">Filter</label>
                     <select id="filter" v-model="currentFilter" @change="loadIncidents"
                         class="form-select form-select-sm text-muted" aria-label=".form-select-sm example">
@@ -23,8 +23,16 @@
                         <option value="custom">Custom</option>
                     </select>
                 </div>
+                <div class="col-lg-6 col-md-8 col-sm-12 d-flex fs-8 mt-2">
+                    <div class="form-check">
+                        <input @change="loadIncidents" v-model="myReportOnlyChk" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label align-center" for="flexCheckDefault">
+                            My Report Only
+                        </label>
+                    </div>
+                </div>
                 <div v-if="currentFilter == 'custom'"
-                    class="col-lg-6 col-md-8 col-sm-12 d-flex justify-content-end fs-8 mt-1">
+                    class="col-lg-6 col-md-8 col-sm-12 d-flex fs-8 mt-1">
                     <div class=" input-group-sm">
                         <label for="startDate">Start</label>
                         <input @change="loadIncidents" v-model="customDateStart" id="startDate"
@@ -54,7 +62,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <IncidentDetail :view-only="false" :incident-item="selectedItemRef" @onedit="onEditItem"
-                        @ondelete="onConfirmDelete" />
+                        @ondelete="onConfirmDelete" @onchangestatus="changestatus"/>
                 </div>
             </div>
         </div>
@@ -112,6 +120,7 @@
 import IncidentDetail from '../incident/IncidentDetails.vue'
 import EditReport from './EditReport.vue'
 import useIncident from '../../composables/incident'
+import useAccount from '../../composables/account';
 import { onMounted, ref } from 'vue';
 import router from '../../router';
 import { Modal, Toast } from 'bootstrap'
@@ -177,9 +186,9 @@ const options = {
 const currentFilter = ref([])
 const selectedItemRef = ref([])
 const historyTable = ref()
-const isViewOnly = ref(false)
 const customDateStart = ref()
 const customDateEnd = ref()
+const myReportOnlyChk = ref(false)
 
 var selectedItem = ""
 var viewModalEl = ""
@@ -194,6 +203,7 @@ var approveToastel = ""
 var deleteToastel = ""
 
 const { getAllIncident, errors, incidents, deleteIncident, updateIncidentStatus } = useIncident()
+const { getUserDetails, userDetails } = useAccount()
 
 onMounted(async () => {
 
@@ -222,13 +232,16 @@ onMounted(async () => {
     }
 
     await getAllIncident(currentFilter.value, '')
-
+    await getUserDetails()
     $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
         var startdate = ""
         var enddate = ""
         var datenow = new Date()
         var d = new Date(data[3])
+        console.log(data)
         if (currentFilter.value == 'today') {
+            
+            //if ( userDetails.value.id == data. )
             if (
                 d.getDate() == datenow.getDate()
             ) {
@@ -333,11 +346,20 @@ function initDate() {
 }
 async function loadIncidents() {
     if (currentFilter.value == 'custom') {
-        var d1 = Date.parse(customDateStart.value) / 1000
-        var d2 = Date.parse(customDateEnd.value) / 1000
-        await getAllIncident(currentFilter.value,'', d1 , d2)
+        var dd1 = new Date(customDateStart.value)
+        //dd1.setDate(dd1.getDate() - 1)
+        dd1.setHours(0,0,0,0)
+        var dd2 = new Date(customDateEnd.value)
+        //dd2.setDate(dd2.getDate() + 1)
+        dd2.setHours(24,59,59,59)
+
+        var d1 = Date.parse(dd1) / 1000
+        var d2 = Date.parse(dd2) / 1000
+        await getAllIncident(currentFilter.value,'', d1 , d2, myReportOnlyChk.value)
+        //console.log(currentFilter.value,'', d1 , d2, errors.value, incidents.value)
     }else{
-        await getAllIncident(currentFilter.value,'')
+        await getAllIncident(currentFilter.value,'','','',myReportOnlyChk.value)
+        //console.log(currentFilter.value,'', errors.value, incidents.value)
     }
 }
 async function onEditItem() {
@@ -360,6 +382,10 @@ async function onConfirmDelete() {
     deleteToaste.show()
     viewModal.hide()
     //dt.draw()
+}
+async function changestatus(d){
+    await updateIncidentStatus(d, selectedItemRef.value)
+    await loadIncidents()
 }
 </script>
 
