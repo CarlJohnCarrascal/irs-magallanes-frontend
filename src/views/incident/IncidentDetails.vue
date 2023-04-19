@@ -67,11 +67,15 @@
                                 <td class="fs-8 text-muted font-weight-bold pl-4 align-top">Member's:
                                 </td>
                                 <td class="fs-8 text-muted pl-2">
-                                    {{
-                                        incident.report_res.member.toString().replaceAll("null,", "").replaceAll("[",
-                                            "").replaceAll("]", "").replaceAll('"null"', "")
-                                    }}
-                                    <!-- {{ incident.report_res.member }} -->
+                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member1 }}</span> <br v-if="incident.report_res.member1">
+                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member2 }}</span> <br v-if="incident.report_res.member2">
+                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member3 }}</span> <br v-if="incident.report_res.member3">
+                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member4 }}</span> <br v-if="incident.report_res.member4">
+                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member5 }}</span> <br v-if="incident.report_res.member5">
+                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member6 }}</span> <br v-if="incident.report_res.member6">
+                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member7 }}</span> <br v-if="incident.report_res.member7">
+                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member8 }}</span> <br v-if="incident.report_res.member8">
+                                <!-- {{ incident.report_res.member }} -->
                                     <!-- <div v-for="item in incident.report_res.member">
                                         {{ item }} 
                                     </div> -->
@@ -258,7 +262,7 @@ watch(() => props.incidentItem,
     async (val) => {
         await getIncident(val)
         await getUserDetails()
-        incident.value.report_res.member = incident.value.report_res.member.replaceAll('[', "").replaceAll(']', "").toString().split(',')
+        //incident.value.report_res.member = incident.value.report_res.member.replaceAll('[', "").replaceAll(']', "").toString().split(',')
         console.log(incident.value.userid, userDetails.value.id, userDetails.value.role, 'admin')
         if (incident.value.userid == userDetails.value.id || userDetails.value.role == 'admin') {
             vv.value = true

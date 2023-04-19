@@ -234,8 +234,15 @@ function initDate() {
 }
 async function loadIncidents() {
     if (currentFilter.value == 'custom') {
-        var d1 = Date.parse(customDateStart.value) / 1000
-        var d2 = Date.parse(customDateEnd.value) / 1000
+        var dd1 = new Date(customDateStart.value)
+        //dd1.setDate(dd1.getDate() - 1)
+        dd1.setHours(0,0,0,0)
+        var dd2 = new Date(customDateEnd.value)
+        //dd2.setDate(dd2.getDate() + 1)
+        dd2.setHours(24,59,59,59)
+
+        var d1 = Date.parse(dd1) / 1000
+        var d2 = Date.parse(dd2) / 1000
         await getAllPatient(currentFilter.value, d1 , d2)
     }else{
         await getAllPatient(currentFilter.value)
