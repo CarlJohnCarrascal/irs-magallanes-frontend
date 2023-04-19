@@ -61,7 +61,7 @@
                         <h5 class="modal-title">Report Detail</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <IncidentDetail :incident-item="selectedItemRef" @onapprove="onConfirmApprove"
+                    <IncidentDetail :incident-item="selectedItemRef" @onapprove="onConfirmApprove" @onedit="onEditItem"
                         @ondelete="onConfirmDelete"  @onchangestatus="changestatus"/>
                 </div>
             </div>
@@ -165,41 +165,43 @@ import DataTablesCore from 'datatables.net-bs5';
 
 DataTable.use(DataTablesCore);
 const columns = [
-    { data: 'report_inf.name', title: 'Informant', class: 'text-capitalize fs-8' },
-    { data: 'type', title: 'Type of Accident', class: 'text-capitalize fs-8' },
-    { data: 'fulllocation', title: 'Location', class: 'text-capitalize fs-8' },
-    { data: 'datetime', title: 'Datetime', class: 'text-capitalize fs-8' },
+    { data: 'report_inf.name', title: 'Informant', class: 'text-capitalize fs-8 text-center align-middle' },
+    { data: 'type', title: 'Type of Accident', class: 'text-capitalize fs-8 text-center align-middle' },
+    { data: 'fulllocation', title: 'Location', class: 'text-capitalize fs-8 align-middle', },
+    { data: 'datetime', title: 'Datetime', class: 'text-capitalize fs-8 align-middle' },
     {
-        data: 'severity', title: 'Severity',
+        data: 'severity', title: 'Severity',class: 'text-center fs-8 align-middle',
         render: function (d) {
-            return `<span class="fs-8 fw-bold text-capitalize s-` + d + `">` + d + `</span>`
+            return `<span class="fs-7 fw-bold text-capitalize s-` + d + `">` + d + `</span>`
         }
     },
     {
-        data: 'status', title: 'Status', class: 'text-capitalize fs-8',
+        data: 'status', title: 'Status', class: 'text-capitalize fs-8 text-center align-middle',
         render: function (d) {
             return `<span class="fs-8 fw-bold text-capitalize">` + d + `</span>`
         }
     },
     {
         data: 'id',
-        title: '',
+        class: 'inline- align-middle',
         sortable: false,
         render: function (o) {
             var action = `<a data-id="` + o + `" type="button" id="btn-view-detail-pending"
-                                    class="btn btn-sm btn-primary">
+                                    class="btn btn-sm btn-primary m-1 fs-9">
                                     View
-                                </a>
-                                <a data-id="` + o + `" type="button" id="btn-edit-item-pending"
-                                    class="btn btn-sm btn-secondary">
-                                    Edit
-                                </a>
-                                <button data-id="`+ o + `" type="button" class="btn btn-sm btn-success m-1" id="btn-approve-item-pending">
-                                    Approve
-                                </button>
-                                <button data-id="`+ o + `" type="button" class="btn btn-sm btn-danger" id="btn-delete-item-pending">
-                                    Delete
-                                </button>`
+                                </a>`
+                            var a =    `<div class="dropdown m-1">
+                                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle fs-9S" data-bs-toggle="dropdown" style="z-index: 9999999">
+                                        Mark As
+                                    </button>
+                                    <ul class="dropdown-menu" style="z-index: 9999">
+                                        <li><a class="dropdown-item" data-id="`+ o + `" id="btn-process-item" role="button">On Process</a></li>
+                                        <li><a class="dropdown-item" data-id="`+ o + `" id="btn-responding-item" role="button">Responding</a></li>
+                                        <li><a class="dropdown-item" data-id="`+ o + `" id="btn-resolved-item" role="button">Resolved</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item text-danger" data-id="`+ o + `" id="btn-delete-item" role="button">Delete</a></li>
+                                    </ul>
+                                </div>`
             return action;
         }
     },
@@ -232,11 +234,11 @@ var deleteToaste = ""
 var approveToastel = ""
 var deleteToastel = ""
 
-const { getAllIncident, errors, incidents, deleteIncident, approveIncident } = useIncident()
+const { getAllIncident, errors, incidents, deleteIncident, approveIncident, updateIncidentStatus } = useIncident()
 let dtpending = null
 
 onMounted(async () => {
-
+    initDate()
     currentFilter.value = 'today'
     await getAllIncident('today', 'pending')
 
@@ -342,7 +344,14 @@ onMounted(async () => {
         deleteModal.show()
     });
 })
+function initDate() {
+    var currentDate = new Date()
+    var strDate = currentDate.getFullYear() + "-0" + (currentDate.getMonth() + 1) + "-" + currentDate.getDate()
+    var cd = (new Date()).toISOString().split('T')[0]
 
+    customDateStart.value = cd
+    customDateEnd.value = cd
+}
 async function loadIncidents() {
     if (currentFilter.value == 'custom') {
         var dd1 = new Date(customDateStart.value)
@@ -361,7 +370,10 @@ async function loadIncidents() {
         //console.log(currentFilter.value,'', errors.value, incidents.value)
     }
 }
-
+async function onEditItem() {
+    viewModal.hide()
+    editModal.show()
+}
 async function onConfirmApprove() {
     $('.btn-approve-item-pending').attr("disabled", "disabled");
     $('.btn-approve-item-pending').children('span').addClass('d-none')

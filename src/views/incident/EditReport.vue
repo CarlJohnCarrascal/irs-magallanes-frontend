@@ -322,44 +322,44 @@
                                                     <div class="col-md-6 form-outline mb-2">
                                                         <label class="form-label"
                                                             for="responder_team_member">Member's</label>
-                                                        <input v-model="responderForm.member[0]" type="text"
+                                                        <input v-model="responderForm.member1" type="text"
                                                             id="responder_team_member" class="form-control" required />
                                                     </div>
                                                     <!-- Member Name input -->
                                                     <div class="col-md-6 form-outline mb-2">
                                                         <label class="form-label d-none d-md-block"
                                                             for="responder_team_member"> &nbsp; </label>
-                                                        <input v-model="responderForm.member[1]" type="text"
+                                                        <input v-model="responderForm.member2" type="text"
                                                             id="responder_team_member2" class="form-control" required />
                                                     </div>
                                                     <!-- Member Name input -->
                                                     <div class="col-md-6 form-outline mb-2">
-                                                        <input v-model="responderForm.member[2]" type="text"
+                                                        <input v-model="responderForm.member3" type="text"
                                                             id="responder_team_member3" class="form-control" required />
                                                     </div>
                                                     <!-- Member Name input -->
                                                     <div class="col-md-6 form-outline mb-2">
-                                                        <input v-model="responderForm.member[3]" type="text"
+                                                        <input v-model="responderForm.member4" type="text"
                                                             id="responder_team_member4" class="form-control" required />
                                                     </div>
                                                     <!-- Member Name input -->
                                                     <div class="col-md-6 form-outline mb-2">
-                                                        <input v-model="responderForm.member[4]" type="text"
+                                                        <input v-model="responderForm.member5" type="text"
                                                             id="responder_team_member5" class="form-control" required />
                                                     </div>
                                                     <!-- Member Name input -->
                                                     <div class="col-md-6 form-outline mb-2">
-                                                        <input v-model="responderForm.member[5]" type="text"
+                                                        <input v-model="responderForm.member6" type="text"
                                                             id="responder_team_member6" class="form-control" required />
                                                     </div>
                                                     <!-- Member Name input -->
                                                     <div class="col-md-6 form-outline mb-2">
-                                                        <input v-model="responderForm.member[6]" type="text"
+                                                        <input v-model="responderForm.member7" type="text"
                                                             id="responder_team_member7" class="form-control" required />
                                                     </div>
                                                     <!-- Member Name input -->
                                                     <div class="col-md-6 form-outline mb-2">
-                                                        <input v-model="responderForm.member[7]" type="text"
+                                                        <input v-model="responderForm.member8" type="text"
                                                             id="responder_team_member8" class="form-control" required />
                                                     </div>
                                                 </div>
@@ -464,22 +464,14 @@
                                                                     Member's:
                                                                 </td>
                                                                 <td class="fs-8 text-muted pl-2">
-                                                                    {{ responderForm.member[0] }} <br
-                                                                        v-if="responderForm.member[0]">
-                                                                    {{ responderForm.member[1] }} <br
-                                                                        v-if="responderForm.member[1]">
-                                                                    {{ responderForm.member[2] }} <br
-                                                                        v-if="responderForm.member[2]">
-                                                                    {{ responderForm.member[3] }} <br
-                                                                        v-if="responderForm.member[3]">
-                                                                    {{ responderForm.member[4] }} <br
-                                                                        v-if="responderForm.member[4]">
-                                                                    {{ responderForm.member[5] }} <br
-                                                                        v-if="responderForm.member[5]">
-                                                                    {{ responderForm.member[6] }} <br
-                                                                        v-if="responderForm.member[6]">
-                                                                    {{ responderForm.member[7] }} <br
-                                                                        v-if="responderForm.member[7]">
+                                                                    {{ responderForm.member1 }} <br v-if="responderForm.member1">
+                                                                    {{ responderForm.member2 }} <br v-if="responderForm.member2">
+                                                                    {{ responderForm.member3 }} <br v-if="responderForm.member3">
+                                                                    {{ responderForm.member4 }} <br v-if="responderForm.member4">
+                                                                    {{ responderForm.member5 }} <br v-if="responderForm.member5">
+                                                                    {{ responderForm.member6 }} <br v-if="responderForm.member6">
+                                                                    {{ responderForm.member7 }} <br v-if="responderForm.member7">
+                                                                    {{ responderForm.member8 }} <br v-if="responderForm.member8">
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -656,6 +648,24 @@
                 </div>
             </div>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="succes-report-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Saved successfully!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Print the report?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button @click="printReport()" type="button" class="btn btn-primary">Print</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -672,7 +682,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['onapprove', 'ondelete'])
-
 
 watch(() => props.incidentItem,
     async (val) => {
@@ -718,8 +727,16 @@ watch(() => props.incidentItem,
 
         responderForm.value.leader = incident.value.report_res.leader
         responderForm.value.driver = incident.value.report_res.driver
-        responderForm.value.member = incident.value.report_res.member.replaceAll('[',"").replaceAll(']',"").toString().split(',')
-
+        responderForm.value.member1 = incident.value.report_res.member1
+        responderForm.value.member2 = incident.value.report_res.member2
+        responderForm.value.member3 = incident.value.report_res.member3
+        responderForm.value.member4 = incident.value.report_res.member4
+        responderForm.value.member5 = incident.value.report_res.member5
+        responderForm.value.member6 = incident.value.report_res.member6
+        responderForm.value.member7 = incident.value.report_res.member7
+        responderForm.value.member8 = incident.value.report_res.member8
+        responderForm.value.member9 = incident.value.report_res.member9
+        responderForm.value.member10 = incident.value.report_res.member10
 
     }
 );
@@ -791,18 +808,16 @@ const accidentDetailForm = ref({
 const responderForm = ref({
     leader: '',
     driver: '',
-    member: [
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        ''
-    ]
+    member1: '',
+    member2: '',
+    member3: '',
+    member4: '',
+    member5: '',
+    member6: '',
+    member7: '',
+    member8: '',
+    member9: '',
+    member10: ''
 })
 const isMed = ref([])
 
@@ -816,6 +831,9 @@ onMounted(async () => {
 
     $('.section-item').hide()
     $('.section-item[data=first]').show()
+
+    mymodalEl = $('#succes-report-modal')
+    myModal = Modal.getOrCreateInstance(mymodalEl)
 
 })
 
@@ -869,7 +887,6 @@ async function onSubmitReport() {
     el.children('span').addClass('d-none')
     el.children('div').removeClass('d-none')
 
-    //await submitReport()
     let incidentval = {
         'id': incident.value.id,
         'informant': informantForm.value,
@@ -882,6 +899,7 @@ async function onSubmitReport() {
         'datetime': accidentDetailForm.value.date + ' ' + accidentDetailForm.value.time,
         'status': 'pending'
     }
+    console.log(incidentval)
 
     await updateIncident(incidentval)
 
@@ -916,18 +934,16 @@ function reset() {
     accidentDetailForm.value.description = ''
     responderForm.value.leader = ''
     responderForm.value.driver = ''
-    responderForm.value.member = [
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        ''
-    ]
+    responderForm.value.member1 = ''
+    responderForm.value.member2 = ''
+    responderForm.value.member3 = ''
+    responderForm.value.member4 = ''
+    responderForm.value.member5 = ''
+    responderForm.value.member6 = ''
+    responderForm.value.member7 = ''
+    responderForm.value.member8 = ''
+    responderForm.value.member9 = ''
+    responderForm.value.member10 = ''
 
 
     $('#accident-type-items').removeClass('btn-danger bg-gradient-danger text-white')
@@ -944,7 +960,8 @@ function reset() {
 
 </script>
 
-<style scoped>hr {
+<style scoped>
+hr {
     border-top: 1px solid red;
 }
 

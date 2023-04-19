@@ -120,7 +120,7 @@
 import IncidentDetail from '../incident/IncidentDetails.vue'
 import EditReport from './EditReport.vue'
 import useIncident from '../../composables/incident'
-import useAccount from '../../composables/account';
+//import useAccount from '../../composables/account';
 import { onMounted, ref } from 'vue';
 import router from '../../router';
 import { Modal, Toast } from 'bootstrap'
@@ -203,7 +203,7 @@ var approveToastel = ""
 var deleteToastel = ""
 
 const { getAllIncident, errors, incidents, deleteIncident, updateIncidentStatus } = useIncident()
-const { getUserDetails, userDetails } = useAccount()
+//const { getUserDetails, userDetails } = useAccount()
 
 onMounted(async () => {
 
@@ -232,7 +232,7 @@ onMounted(async () => {
     }
 
     await getAllIncident(currentFilter.value, '')
-    await getUserDetails()
+    //await getUserDetails()
     $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
         var startdate = ""
         var enddate = ""

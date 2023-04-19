@@ -201,6 +201,7 @@
                                 <option value="on process">On Process</option>
                                 <option value="responding">Responding</option>
                                 <option value="resolved">Resolved</option>
+                                <option value="pending">Pending</option>
                             </select>
                         </div>
                     </div>
