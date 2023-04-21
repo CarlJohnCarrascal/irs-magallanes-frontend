@@ -54,7 +54,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <IncidentDetail :view-only="false" :incident-item="selectedItemRef" @onedit="onEditItem"
-                        @ondelete="onConfirmDelete" />
+                        @ondelete="onConfirmDelete" @onchangestatus="changestatus"/>
                 </div>
             </div>
         </div>
@@ -144,7 +144,7 @@ const columns = [
     },
     {
         data: 'id',
-        class: 'inline- align-middle',
+        class: 'inline-d align-middle',
         sortable: false,
         render: function (o) {
             var action = `<a data-id="` + o + `" type="button" id="btn-view-detail"
@@ -360,6 +360,11 @@ async function onConfirmDelete() {
     deleteToaste.show()
     viewModal.hide()
     //dt.draw()
+}
+
+async function changestatus(s){
+    await updateIncidentStatus(s, selectedItemRef.value)
+    await loadIncidents()
 }
 </script>
 
