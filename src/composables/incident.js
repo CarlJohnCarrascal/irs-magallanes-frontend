@@ -8,19 +8,25 @@ export default function useIncident(){
     const errors = ref([])
     const patients = ref([])
 
-    const getAllIncident = async (r,t) => {
+    const getAllIncident = async (r,t, cd1 = '', cd2 = '', my = false) => {
         var form = {
             'r': r,
-            't': t
+            't': t,
+            'cd1': cd1,
+            'cd2': cd2
         }
         await axios.get('incidents',{ params: {
             'r': r,
-            't': t
+            't': t,
+            'cd1': cd1,
+            'cd2': cd2,
+            'my': my
         } })
         .then((res) => {
             if(res.data.success){
                 errors.value = []
                 incidents.value = res.data.data
+                console.log(res.data)
             }else{
                 errors.value = res.data.data
             }
@@ -45,7 +51,7 @@ export default function useIncident(){
     const addIncident = async (incident) => {
         await axios.post('incidents', incident)
         .then((res) => {
-            console.log(res)
+            //console.log(res)
             if(res.data.success){
                 incident.value = res.data.data
                 errors.value = []
@@ -55,14 +61,14 @@ export default function useIncident(){
         })
         .catch((err) => {
             errors.value = err.response.data.data
-            console.log(err)
+            //console.log(err)
         })
     }
     const updateIncident = async (incident) => {
-        console.log(incident)
+        //console.log(incident)
         await axios.put('incidents/' + incident.id, incident)
         .then((res) => {
-            console.log(res)
+            //console.log(res)
             if(res.data.success){
                 incident.value = res.data.data
                 errors.value = []
@@ -72,7 +78,7 @@ export default function useIncident(){
         })
         .catch((err) => {
             errors.value = err.response.data.data
-            console.log(err)
+            //console.log(err)
         })
     }
     const updateIncidentStatus = async (status, id) => {
@@ -81,7 +87,7 @@ export default function useIncident(){
         }
         await axios.put('incident/updatestatus/' + id, status)
         .then((res) => {
-            console.log(res)
+            //console.log(res)
             if(res.data.success){
                 incident.value = res.data.data
                 errors.value = []
@@ -91,7 +97,7 @@ export default function useIncident(){
         })
         .catch((err) => {
             errors.value = err.response.data.data
-            console.log(err)
+            //console.log(err)
         })
     }
     const deleteIncident = async (id) => {
@@ -138,7 +144,6 @@ export default function useIncident(){
             errors.value = err.response
         })
     }
-    
 
     return {
         getAllIncident, getIncident, addIncident, deleteIncident, approveIncident, updateIncident, updateIncidentStatus, getAllPatient,

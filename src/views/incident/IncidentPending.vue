@@ -23,8 +23,16 @@
                         <option value="custom">Custom</option>
                     </select>
                 </div>
+                <div class="col-lg-6 col-md-8 col-sm-12 d-flex fs-8 mt-2">
+                    <div class="form-check">
+                        <input @change="loadIncidents" v-model="myReportOnlyChk" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label align-center" for="flexCheckDefault">
+                            My Report Only
+                        </label>
+                    </div>
+                </div>
                 <div v-if="currentFilter == 'custom'"
-                    class="col-lg-6 col-md-8 col-sm-12 d-flex justify-content-end fs-8 mt-1">
+                    class="col-lg-6 col-md-8 col-sm-12 d-flex fs-8 mt-1">
                     <div class=" input-group-sm">
                         <label for="startDate">Start</label>
                         <input @change="loadIncidents" v-model="customDateStart" id="startDate"
@@ -53,8 +61,8 @@
                         <h5 class="modal-title">Report Detail</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <IncidentDetail :incident-item="selectedItemRef" @onapprove="onConfirmApprove"
-                        @ondelete="onConfirmDelete" />
+                    <IncidentDetail :incident-item="selectedItemRef" @onapprove="onConfirmApprove" @onedit="onEditItem"
+                        @ondelete="onConfirmDelete"  @onchangestatus="changestatus"/>
                 </div>
             </div>
         </div>
@@ -157,41 +165,43 @@ import DataTablesCore from 'datatables.net-bs5';
 
 DataTable.use(DataTablesCore);
 const columns = [
-    { data: 'report_inf.name', title: 'Informant', class: 'text-capitalize fs-8' },
-    { data: 'type', title: 'Type of Accident', class: 'text-capitalize fs-8' },
-    { data: 'fulllocation', title: 'Location', class: 'text-capitalize fs-8' },
-    { data: 'datetime', title: 'Datetime', class: 'text-capitalize fs-8' },
+    { data: 'report_inf.name', title: 'Informant', class: 'text-capitalize fs-8 text-center align-middle' },
+    { data: 'type', title: 'Type of Accident', class: 'text-capitalize fs-8 text-center align-middle' },
+    { data: 'fulllocation', title: 'Location', class: 'text-capitalize fs-8 align-middle', },
+    { data: 'datetime', title: 'Datetime', class: 'text-capitalize fs-8 align-middle' },
     {
-        data: 'severity', title: 'Severity',
+        data: 'severity', title: 'Severity',class: 'text-center fs-8 align-middle',
         render: function (d) {
-            return `<span class="fs-8 fw-bold text-capitalize s-` + d + `">` + d + `</span>`
+            return `<span class="fs-7 fw-bold text-capitalize s-` + d + `">` + d + `</span>`
         }
     },
     {
-        data: 'status', title: 'Status', class: 'text-capitalize fs-8',
+        data: 'status', title: 'Status', class: 'text-capitalize fs-8 text-center align-middle',
         render: function (d) {
             return `<span class="fs-8 fw-bold text-capitalize">` + d + `</span>`
         }
     },
     {
         data: 'id',
-        title: '',
+        class: 'inline- align-middle',
         sortable: false,
         render: function (o) {
             var action = `<a data-id="` + o + `" type="button" id="btn-view-detail-pending"
-                                    class="btn btn-sm btn-primary">
+                                    class="btn btn-sm btn-primary m-1 fs-9">
                                     View
-                                </a>
-                                <a data-id="` + o + `" type="button" id="btn-edit-item-pending"
-                                    class="btn btn-sm btn-secondary">
-                                    Edit
-                                </a>
-                                <button data-id="`+ o + `" type="button" class="btn btn-sm btn-success m-1" id="btn-approve-item-pending">
-                                    Approve
-                                </button>
-                                <button data-id="`+ o + `" type="button" class="btn btn-sm btn-danger" id="btn-delete-item-pending">
-                                    Delete
-                                </button>`
+                                </a>`
+                            var a =    `<div class="dropdown m-1">
+                                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle fs-9S" data-bs-toggle="dropdown" style="z-index: 9999999">
+                                        Mark As
+                                    </button>
+                                    <ul class="dropdown-menu" style="z-index: 9999">
+                                        <li><a class="dropdown-item" data-id="`+ o + `" id="btn-process-item" role="button">On Process</a></li>
+                                        <li><a class="dropdown-item" data-id="`+ o + `" id="btn-responding-item" role="button">Responding</a></li>
+                                        <li><a class="dropdown-item" data-id="`+ o + `" id="btn-resolved-item" role="button">Resolved</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item text-danger" data-id="`+ o + `" id="btn-delete-item" role="button">Delete</a></li>
+                                    </ul>
+                                </div>`
             return action;
         }
     },
@@ -206,6 +216,10 @@ const options = {
 
 const currentFilter = ref([])
 const selectedItemRef = ref([])
+const pendingTable = ref()
+const customDateStart = ref()
+const customDateEnd = ref()
+const myReportOnlyChk = ref(false)
 var selectedItem = ""
 var viewModalEl = ""
 var viewModal = ""
@@ -220,11 +234,11 @@ var deleteToaste = ""
 var approveToastel = ""
 var deleteToastel = ""
 
-const { getAllIncident, errors, incidents, deleteIncident, approveIncident } = useIncident()
+const { getAllIncident, errors, incidents, deleteIncident, approveIncident, updateIncidentStatus } = useIncident()
 let dtpending = null
 
 onMounted(async () => {
-
+    initDate()
     currentFilter.value = 'today'
     await getAllIncident('today', 'pending')
 
@@ -330,17 +344,36 @@ onMounted(async () => {
         deleteModal.show()
     });
 })
+function initDate() {
+    var currentDate = new Date()
+    var strDate = currentDate.getFullYear() + "-0" + (currentDate.getMonth() + 1) + "-" + currentDate.getDate()
+    var cd = (new Date()).toISOString().split('T')[0]
 
+    customDateStart.value = cd
+    customDateEnd.value = cd
+}
 async function loadIncidents() {
     if (currentFilter.value == 'custom') {
-        var d1 = Date.parse(customDateStart.value) / 1000
-        var d2 = Date.parse(customDateEnd.value) / 1000
-        await getAllIncident(currentFilter.value,'pending', d1 , d2)
+        var dd1 = new Date(customDateStart.value)
+        //dd1.setDate(dd1.getDate() - 1)
+        dd1.setHours(0,0,0,0)
+        var dd2 = new Date(customDateEnd.value)
+        //dd2.setDate(dd2.getDate() + 1)
+        dd2.setHours(24,59,59,59)
+
+        var d1 = Date.parse(dd1) / 1000
+        var d2 = Date.parse(dd2) / 1000
+        await getAllIncident(currentFilter.value,'pending', d1 , d2, myReportOnlyChk.value)
+        //console.log(currentFilter.value,'', d1 , d2, errors.value, incidents.value)
     }else{
-        await getAllIncident(currentFilter.value,'pending')
+        await getAllIncident(currentFilter.value,'pending','','',myReportOnlyChk.value)
+        //console.log(currentFilter.value,'', errors.value, incidents.value)
     }
 }
-
+async function onEditItem() {
+    viewModal.hide()
+    editModal.show()
+}
 async function onConfirmApprove() {
     $('.btn-approve-item-pending').attr("disabled", "disabled");
     $('.btn-approve-item-pending').children('span').addClass('d-none')
@@ -374,6 +407,10 @@ async function onConfirmDelete() {
     deleteToaste.show()
     viewModal.hide()
     dtpending.draw()
+}
+async function changestatus(d){
+    await updateIncidentStatus(d, selectedItemRef.value)
+    await loadIncidents()
 }
 </script>
 
