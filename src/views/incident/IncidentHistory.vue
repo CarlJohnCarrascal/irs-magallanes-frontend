@@ -25,14 +25,14 @@
                 </div>
                 <div class="col-lg-6 col-md-8 col-sm-12 d-flex fs-8 mt-2">
                     <div class="form-check">
-                        <input @change="loadIncidents" v-model="myReportOnlyChk" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <input @change="loadIncidents" v-model="myReportOnlyChk" class="form-check-input" type="checkbox"
+                            value="" id="flexCheckDefault">
                         <label class="form-check-label align-center" for="flexCheckDefault">
                             My Report Only
                         </label>
                     </div>
                 </div>
-                <div v-if="currentFilter == 'custom'"
-                    class="col-lg-6 col-md-8 col-sm-12 d-flex fs-8 mt-1">
+                <div v-if="currentFilter == 'custom'" class="col-lg-6 col-md-8 col-sm-12 d-flex fs-8 mt-1">
                     <div class=" input-group-sm">
                         <label for="startDate">Start</label>
                         <input @change="loadIncidents" v-model="customDateStart" id="startDate"
@@ -46,8 +46,8 @@
                 </div>
             </div>
             <div class="">
-                <DataTable :data="incidents" id="history-table" class="table table-hover" :columns="columns" :options="options"
-                    :ref="historyTable">
+                <DataTable :data="incidents" id="history-table" class="table table-hover" :columns="columns"
+                    :options="options" :ref="historyTable">
                 </DataTable>
             </div>
         </div>
@@ -62,20 +62,25 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <IncidentDetail :view-only="false" :incident-item="selectedItemRef" @onedit="onEditItem"
-                        @ondelete="onConfirmDelete" @onchangestatus="onChangeStatus"/>
+                        @ondelete="onConfirmDelete" @onchangestatus="onChangeStatus" />
                 </div>
             </div>
         </div>
         <!-- edit item modal -->
         <div class="modal fade" id="edit-item-modal" tabindex="99999" role="dialog" aria-labelledby="myLargeModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Update Report Detail</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <EditReport :incident-item="selectedItemRef" />
+                    <div class="modal-body">
+                        <EditReport :incident-item="selectedItemRef" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -140,7 +145,7 @@ const columns = [
     { data: 'fulllocation', title: 'Location', class: 'text-capitalize fs-8 align-middle', },
     { data: 'datetime', title: 'Datetime', class: 'text-capitalize fs-8 align-middle' },
     {
-        data: 'severity', title: 'Severity',class: 'text-center fs-8 align-middle',
+        data: 'severity', title: 'Severity', class: 'text-center fs-8 align-middle',
         render: function (d) {
             return `<span class="fs-7 fw-bold text-capitalize s-` + d + `">` + d + `</span>`
         }
@@ -160,7 +165,7 @@ const columns = [
                                     class="btn btn-sm btn-primary m-1 fs-9">
                                     View
                                 </a>`
-                            var a =    `<div class="dropdown m-1">
+            var a = `<div class="dropdown m-1">
                                     <button type="button" class="btn btn-sm btn-primary dropdown-toggle fs-9S" data-bs-toggle="dropdown" style="z-index: 9999999">
                                         Mark As
                                     </button>
@@ -240,7 +245,7 @@ onMounted(async () => {
         var d = new Date(data[3])
         console.log(data)
         if (currentFilter.value == 'today') {
-            
+
             //if ( userDetails.value.id == data. )
             if (
                 d.getDate() == datenow.getDate()
@@ -348,17 +353,17 @@ async function loadIncidents() {
     if (currentFilter.value == 'custom') {
         var dd1 = new Date(customDateStart.value)
         //dd1.setDate(dd1.getDate() - 1)
-        dd1.setHours(0,0,0,0)
+        dd1.setHours(0, 0, 0, 0)
         var dd2 = new Date(customDateEnd.value)
         //dd2.setDate(dd2.getDate() + 1)
-        dd2.setHours(24,59,59,59)
+        dd2.setHours(24, 59, 59, 59)
 
         var d1 = Date.parse(dd1) / 1000
         var d2 = Date.parse(dd2) / 1000
-        await getAllIncident(currentFilter.value,'', d1 , d2, myReportOnlyChk.value)
+        await getAllIncident(currentFilter.value, '', d1, d2, myReportOnlyChk.value)
         //console.log(currentFilter.value,'', d1 , d2, errors.value, incidents.value)
-    }else{
-        await getAllIncident(currentFilter.value,'','','',myReportOnlyChk.value)
+    } else {
+        await getAllIncident(currentFilter.value, '', '', '', myReportOnlyChk.value)
         //console.log(currentFilter.value,'', errors.value, incidents.value)
     }
 }

@@ -1,18 +1,19 @@
 import useBase from "./base"
 
-export default function useIncidenType() {
+export default function useChart() {
 
     const { ref, axios } = useBase()
 
-    const itype = ref([])
-    const itypes = ref([])
     const errors = ref([])
+    const charts = ref([])
+    const report = ref([])
+    const barangay = ref([])
 
-    const getAllTypes = async () => {
-        await axios.get('/types')
+    const getChart = async () => {
+        await axios.get('/chart/accidents')
             .then((e) => {
                 if (e.data.success) {
-                    itypes.value = e.data.data
+                    charts.value = e.data.data
                     errors.value = e.data.data
                     //console.log(e.data.data)
                 } else {
@@ -25,16 +26,32 @@ export default function useIncidenType() {
                 console.log('An error happen fetching data.', e)
             })
     }
-
-    const addType = async (name) => {
-        var data = { 'name': name };
-        await axios.post('/types', data)
+    const getReport = async () => {
+        await axios.get('/chart/reportdata')
             .then((e) => {
                 if (e.data.success) {
-                    getAllTypes()
-                    //errors.value = e.data.data
+                    report.value = e.data.data
+                    errors.value = e.data.data
+                    //console.log(e.data.data)
                 } else {
-                    errors.value = e.data.data;
+                    errors.value = e.data.data
+                    //console.log('An error happen fetching data.', e)
+                }
+            })
+            .catch((e) => {
+                errors.value = e.response.data.data
+                console.log('An error happen fetching data.', e)
+            })
+    }
+    const getBarangay = async () => {
+        await axios.get('/chart/barangay')
+            .then((e) => {
+                if (e.data.success) {
+                    barangay.value = e.data.data
+                    errors.value = []
+                    //console.log(e.data.data)
+                } else {
+                    errors.value = e.data.data
                     //console.log('An error happen fetching data.', e)
                 }
             })
@@ -44,25 +61,8 @@ export default function useIncidenType() {
             })
     }
 
-    const deleteType = async (id) => {
-        await axios.delete('/deletetypes/' + id)
-            .then((e) => {
-                if (e.data.success) {
-                    getAllTypes()
-                    //errors.value = e.data.data
-                } else {
-                    errors.value = e.data.data;
-                }
-                // console.log('An error happen fetching data.',e)
-            })
-            .catch((e) => {
-                errors.value = e.response.data.data
-                console.log('An error happen fetching data.', e)
-            })
-    }
-
     return {
-        getAllTypes, addType, deleteType,
-        itype, itypes, errors,
+        getChart,getReport,getBarangay,
+        charts,report,barangay,
     }
 }

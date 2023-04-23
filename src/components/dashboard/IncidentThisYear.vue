@@ -7,7 +7,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                             Incident Reported This Year</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">1240</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{year}}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-car-crash fa-2x text-gray-300"></i>
@@ -19,6 +19,16 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue';
+import useChart from '../../composables/chart';
+const { getReport, report } = useChart()
+
+const year = ref(0)
+
+onMounted(async () => {
+    await getReport()
+    year.value = report.value.year
+})
 </script>
 
 <style lang="scss" scoped>

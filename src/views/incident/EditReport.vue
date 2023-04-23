@@ -897,7 +897,7 @@ async function onSubmitReport() {
         'barangay': accidentDetailForm.value.barangay,
         'purok': accidentDetailForm.value.purok,
         'datetime': accidentDetailForm.value.date + ' ' + accidentDetailForm.value.time,
-        'status': 'pending'
+        'status': incident.value.status
     }
     console.log(incidentval)
 

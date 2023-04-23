@@ -69,13 +69,18 @@
         <!-- edit item modal -->
         <div class="modal fade" id="edit-item-modal-pending" tabindex="9999" role="dialog" aria-labelledby="myLargeModalLabel2"
             aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Update Report Detail</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <EditReport :incident-item="selectedItemRef" />
+                    <div class="modal-body">
+                        <EditReport :incident-item="selectedItemRef" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>

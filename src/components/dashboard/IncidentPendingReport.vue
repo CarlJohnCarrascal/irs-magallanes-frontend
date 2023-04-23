@@ -7,7 +7,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                             Pending Reports</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ pending }}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -19,6 +19,16 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue';
+import useChart from '../../composables/chart';
+const { getReport, report } = useChart()
+
+const pending = ref(0)
+
+onMounted(async () => {
+    await getReport()
+    pending.value = report.value.pending
+})
 
 function showIncidentHistory(){
     //router.replace('/incident/history')
