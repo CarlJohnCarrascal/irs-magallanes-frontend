@@ -247,6 +247,7 @@ async function loadIncidents() {
     }else{
         await getAllPatient(currentFilter.value)
     }
+    console.log(patients.value)
 }
 </script>
 

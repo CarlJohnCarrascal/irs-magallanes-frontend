@@ -96,7 +96,7 @@ export default function useIncident(){
             }
         })
         .catch((err) => {
-            errors.value = err.response.data.data
+            errors.value = err.response
             //console.log(err)
         })
     }
@@ -110,7 +110,8 @@ export default function useIncident(){
             }
         })
         .catch((err) => {
-            errors.value = err.data.data
+            errors.value = err.response
+            console.log(err.response)
         })
     }
     const approveIncident = async (id) => {
@@ -123,7 +124,7 @@ export default function useIncident(){
             }
         })
         .catch((err) => {
-            errors.value = err.data.data
+            errors.value = err.response
         })
     }
     const getAllPatient = async (r, cd1 = null, cd2 = null) => {

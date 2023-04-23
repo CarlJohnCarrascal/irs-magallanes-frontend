@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div class="">
-                <DataTable :data="incidents" id="pending-table" class="display" :columns="columns" :options="options"
+                <DataTable :data="incidents" id="pending-table" class="table table-hover" :columns="columns" :options="options"
                     :ref="pendingTable">
                 </DataTable>
             </div>

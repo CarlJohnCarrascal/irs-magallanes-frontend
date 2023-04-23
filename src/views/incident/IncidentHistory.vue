@@ -62,7 +62,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <IncidentDetail :view-only="false" :incident-item="selectedItemRef" @onedit="onEditItem"
-                        @ondelete="onConfirmDelete" @onchangestatus="changestatus"/>
+                        @ondelete="onConfirmDelete" @onchangestatus="onChangeStatus"/>
                 </div>
             </div>
         </div>
@@ -382,6 +382,11 @@ async function onConfirmDelete() {
     deleteToaste.show()
     viewModal.hide()
     //dt.draw()
+}
+
+async function onChangeStatus(d) {
+    await updateIncidentStatus(d, selectedItemRef.value)
+    await loadIncidents()
 }
 </script>
 

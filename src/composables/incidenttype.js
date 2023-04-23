@@ -1,7 +1,7 @@
 import useBase from "./base"
 
 export default function useIncidenType() {
-    
+
     const { ref, axios } = useBase()
 
     const itype = ref([])
@@ -53,16 +53,35 @@ export default function useIncidenType() {
                 } else {
                     errors.value = e.data.data;
                 }
-               // console.log('An error happen fetching data.',e)
+                // console.log('An error happen fetching data.',e)
             })
             .catch((e) => {
                 errors.value = e.response.data.data
-                console.log('An error happen fetching data.',e)
+                console.log('An error happen fetching data.', e)
+            })
+    }
+
+    const charts = ref([])
+    const getChart = async () => {
+        await axios.get('/types')
+            .then((e) => {
+                if (e.data.success) {
+                    charts.value = e.data.data
+                    errors.value = e.data.data
+                    //console.log(e.data.data)
+                } else {
+                    errors.value = e.data.data
+                    //console.log('An error happen fetching data.', e)
+                }
+            })
+            .catch((e) => {
+                errors.value = e.response.data.data
+                console.log('An error happen fetching data.', e)
             })
     }
 
     return {
-        getAllTypes,addType,deleteType,
-        itype,itypes,errors,
+        getAllTypes, addType, deleteType,getChart,
+        itype, itypes, errors,charts,
     }
 }

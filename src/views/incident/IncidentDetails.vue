@@ -229,6 +229,12 @@
                     </button>
                     <button type="button" class="btn btn-sm btn-secondary ml-1" data-bs-dismiss="modal">Close</button>
                 </div>
+                <div v-else>
+                    <button type="button" class="btn btn-sm btn-secondary ml-1" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <div v-else>
+                <button type="button" class="btn btn-sm btn-secondary ml-1" data-bs-dismiss="modal">Close</button>
             </div>
 
 
@@ -265,7 +271,6 @@ watch(() => props.incidentItem,
         }
     }
 );
-
 
 
 </script>
