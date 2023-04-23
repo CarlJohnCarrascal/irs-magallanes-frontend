@@ -30,7 +30,15 @@ const ca = ref([])
 const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
-    indexAxis: 'y'
+    indexAxis: 'y',
+    scales: {
+      x: {
+        ticks: {
+          stepSize: 1,
+          beginAtZero: true,
+        },
+      },
+    },
 }
 
 onMounted(async () => {
@@ -56,10 +64,15 @@ onMounted(async () => {
         ca.value.push(cdata)
     })
 
-    console.log(charts.value)
 
 })
 
 </script>
     
-<style scoped></style>
+
+<style scoped>
+#chartbar {
+    min-width: 400px;
+    min-height: 500px;
+}
+</style>

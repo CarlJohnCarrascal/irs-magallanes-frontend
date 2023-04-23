@@ -84,7 +84,7 @@ watchEffect(async () => {
             </li>
 
             <!-- Nav Item - Messages -->
-            <li class="nav-item dropdown no-arrow mx-1">
+            <li class="nav-item dropdown no-arrow mx-1 d-none">
                 <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-envelope fa-fw"></i>
@@ -166,10 +166,10 @@ watchEffect(async () => {
                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                         Profile
                     </RouterLink>
-                    <RouterLink to="/activities/logs" class="dropdown-item" href="#">
+                    <!-- <RouterLink to="/activities/logs" class="dropdown-item" href="#">
                         <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                         Activity Log
-                    </RouterLink>
+                    </RouterLink> -->
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

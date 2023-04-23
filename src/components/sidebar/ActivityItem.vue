@@ -12,7 +12,7 @@
                         <i class="fas fa-fw fa-bell"></i>
                         <span> Notifications</span>
                     </RouterLink>
-                    <RouterLink class="collapse-item activity-messages" to="/activities/messages">
+                    <RouterLink class="collapse-item activity-messages d-none" to="/activities/messages">
                         <i class="fas fa-fw fa-envelope"></i>
                         <span> Messages</span>
                     </RouterLink>

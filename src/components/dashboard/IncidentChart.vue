@@ -28,7 +28,15 @@ const ca = ref([])
 
 const chartOptions = {
     responsive: true,
-    maintainAspectRatio: false
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        ticks: {
+          stepSize: 1,
+          beginAtZero: true,
+        },
+      },
+    },
 }
 
 onMounted(async () => {
@@ -60,7 +68,6 @@ onMounted(async () => {
 
 <style scoped>
 #chartbar {
-    min-width: 850px;
     min-height: 500px;
 }
 </style>
