@@ -7,53 +7,36 @@
                 <i class="fas fa-plus fa-sm text-white-50"></i> <span class="d-none d-sm-inline-block text-white ml-1">Add New</span></a> -->
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Role</th>
-                            <th>Full name</th>
-                            <th>Address</th>
-                            <th>Report Made</th>
-                            <th>Joined At</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(userr, count) in users" :key="userr.id">
-                            <td>{{ count }}</td>
-                            <td>{{ userr.role }}</td>
-                            <td>{{ userr.fullname }}</td>
-                            <td>{{ userr.address }}</td>
-                            <td>{{ userr.report_made }}</td>
-                            <td>{{ userr.created_at }}</td>
-                            <td>
-                                <RouterLink :to="{ name: 'userdetail', params: { id: userr.id } }" type="button"
-                                    class="btn btn-sm btn-primary mb-1 mx-1">
-                                    View
-                                </RouterLink>
-                                <div class="btn-group mb-1 mx-1">
-                                    <button type="button" class="btn btn-sm btn-danger dropdown-toggle"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        Mark As
-                                    </button>
-                                    <ul class="dropdown-menu position-fixed" style="z-index: 20;">
-                                        <li><a @click="onDeactivateAccount(userr.id)" class="dropdown-item" role="button">Deactivate</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a @click="onDeleteAccount(userr)" class="dropdown-item text-danger" role="button">Delete</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="">
+                <DataTable :data="users" id="user-table" class="table table-hover" :columns="columns" :options="options"
+                    :ref="userTable">
+                </DataTable>
             </div>
         </div>
-        <!-- The Modal -->
-        <div class="modal fade" id="myModal">
+        <!-- view detail modal -->
+        <div class="modal fade" id="view-item-modal" tabindex="99999" role="dialog" aria-labelledby="myLargeModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">User Detail</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <UserDetailView :user="selectedUser" />
+                    </div>
+                    <div class="modal-footer">
+                        <button @click="onDeactivateAccount"
+                            class="btn btn-sm btn-danger">Deactivate Account</button>
+                        <button @click="onDeleteAccount" class="btn btn-sm btn-danger mx-1">Delete Account</button>
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- delete Modal -->
+        <div class="modal fade" id="my-modal" tabindex="99999" role="dialog" aria-labelledby="myLargeModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
 
@@ -83,7 +66,7 @@
                     <!-- Modal footer -->
                     <div class="modal-footer">
                         <button @click="onConfirmDeleteAccount" type="button" class="btn btn-danger">Confirm</button>
-                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     </div>
 
                 </div>
@@ -93,33 +76,100 @@
 </template>
 
 <script setup>
-
-import { onMounted } from 'vue'
+import UserDetailView from './UserDetailView.vue';
+import { onMounted, ref } from 'vue'
 import useUser from '../../composables/user'
+import { Modal, Toast } from 'bootstrap'
+import DataTable from 'datatables.net-vue3';
+import DataTablesCore from 'datatables.net-bs5';
+
 const { user, users, getAllUser, getUser, activateUser, deactivateUser, deleteUser } = useUser()
-const selectedUser = []
+const selectedUser = ref([])
+const selectedItem = ref([])
+const userTable = ref()
+
+var viewModalEl = ""
+var viewModal = ""
+var delModalEl = ""
+var delModal = ""
+
+DataTable.use(DataTablesCore);
+const columns = [
+    { data: 'role', title: 'Role', class: 'text-capitalize fs-8 text-center align-middle' },
+    { data: 'fullname', title: 'Fullname', class: 'text-capitalize fs-8 text-center align-middle' },
+    { data: 'address', title: 'Address', class: 'text-capitalize fs-8 align-middle', },
+    { data: 'report_made', title: 'Total Report', class: 'text-capitalize fs-8 align-middle' },
+    { data: 'created_at', title: 'Sign-up Date', class: 'text-capitalize fs-8 align-middle' },
+    {
+        data: 'id',
+        class: '',
+        sortable: false,
+        render: function (o) {
+            var a = `<a data-id="` + o + `" id="btn-view-user" role="button"
+            class="btn btn-sm btn-primary mb-1 mx-1">
+                                    View
+                                </a>`
+            var aa = `<a data-id="` + o + `" id="btn-view-user" role="button"
+                                    class="btn btn-sm btn-primary mb-1 mx-1">
+                                    View
+                                </a>
+                                <div class="btn-group mb-1 mx-1">
+                                    <button type="button" class="btn btn-sm btn-danger dropdown-toggle"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Mark As
+                                    </button>
+                                    <ul class="dropdown-menu position-fixed" style="z-index: 20;">
+                                        <li><a data-id="`+ o + `" id="btn-deactivate-user" class="dropdown-item" role="button">Deactivate</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a data-id="`+ o + `" id="btn-delete-user" class="dropdown-item text-danger" role="button">Delete</a></li>
+                                    </ul>
+                                </div>`
+            return a;
+        }
+    },
+];
+const options = {
+    select: true,
+    responsive: true,
+    scrollY: '100%',
+    scrollX: '100%',
+}
 
 onMounted(async () => {
     await getAllUser('active')
-    console.log(users)
-    $('#dataTable').DataTable()
+
+    viewModalEl = $('#view-item-modal')
+    viewModal = Modal.getOrCreateInstance(viewModalEl)
+    delModalEl = $('#my-modal')
+    delModal = Modal.getOrCreateInstance(delModalEl)
+    
+    $('#user-table').on('click', 'a#btn-view-user',async function (e) {
+        e.preventDefault();
+        var id = $(this).attr('data-id')
+        //alert(id)
+        await getUser(id)
+        selectedUser.value = user.value
+        selectedItem.value = id
+        viewModal.show()
+    });
 })
 
-async function onDeactivateAccount(id){
-    await deactivateUser(id)
+async function onDeleteAccount() {
+    viewModal.hide()
+    delModal.show()
+}
+async function onConfirmDeleteAccount() {
+    await deleteUser(selectedItem.value)
+    delModal.hide()
     await getAllUser('active')
 }
-
-async function onDeleteAccount(user) {
-    selectedUser.value = user
-    $('#myModal').modal('show')
+async function onDeactivateAccount() {
+    await deactivateUser(selectedItem.value)
+    viewModal.hide()
+    await getAllUser('active')
 }
-async function onConfirmDeleteAccount(){
-    await deleteUser(selectedUser.value.id)
-    $('#myModal').modal('hide')
-    await getAllUser('deactivated')
-}
-
 </script>
 
 <style scoped></style>

@@ -28,10 +28,10 @@
                     <BarangayList />
                 </div>
                 <div class="tab-pane fade" id="incidenttypes" role="tabpanel" aria-labelledby="incidenttypes-tab">
-                    <IncidentTypes />
+                    <IncidentTypes @onmakechange="madeChange"/>
                 </div>
                 <div class="tab-pane fade" id="incidentcauses" role="tabpanel" aria-labelledby="incidentcauses-tab">
-                    <Causes />
+                    <Causes :reload="makechanges"/>
                 </div>
                 <!-- <div class="tab-pane fade" id="severity" role="tabpanel" aria-labelledby="severity-tab">
                     <Severities />
@@ -45,7 +45,12 @@ import BarangayList from '../../components/incident/BarangayList.vue';
 import IncidentTypes from '../../components/incident/IncidentTypes.vue';
 import Causes from '../../components/incident/Causes.vue';
 //import Severities from '../../components/incident/Severities.vue';
+import { ref } from 'vue'
 
+const makechanges = ref([])
+async function madeChange(){
+    makechanges.value = Math.random(100)
+}
 </script>
 
 <style lang="scss" scoped>

@@ -12,7 +12,7 @@ export default function useUser(){
         .then((res) => {
             if(res.data.success){
                 users.value = res.data.data
-                console.log(res.data)
+                //console.log(res.data)
             }else{
                 errors.value = res.data.data
             }
@@ -26,7 +26,7 @@ export default function useUser(){
         .then((res) => {
             if(res.data.success){
                 user.value = res.data.data
-                console.log(res.data)
+                //console.log(res.data)
             }else{
                 errors.value = res.data.data
             }

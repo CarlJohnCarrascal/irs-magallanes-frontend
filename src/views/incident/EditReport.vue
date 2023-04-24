@@ -148,15 +148,15 @@
                                                             </option>
                                                             <option v-for="cause in causes" :value="cause.name">{{
                                                                 cause.name }}</option>
-                                                            <option :value="'other'">Other</option>
+                                                            <!-- <option :value="'other'">Other</option> -->
                                                         </select>
                                                         <!-- other cause of patient input -->
-                                                        <div class="col-12 p-0 form-outline mb-2"
+                                                        <!-- <div class="col-12 p-0 form-outline mb-2"
                                                             v-if="patientForm.cause == 'other'">
                                                             <input v-model="patientForm.otherCause"
                                                                 placeholder="enter cause" type="text" class="form-control"
                                                                 required />
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                     <div class="col-sm-12 col-md-6 mt-md-4 mb-2 d-flex justify-content-end">
                                                         <a @click="onAddPatient" class="btn btn-md btn-primary">Add

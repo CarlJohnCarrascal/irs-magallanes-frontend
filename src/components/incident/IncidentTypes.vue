@@ -64,6 +64,8 @@ const form = {
     name: ""
 }
 
+const emit = defineEmits(['onmakechange'])
+
 async function onDelete(id) {
     var el = $("button[data-id='"+ id + "']")
     el.attr("disabled", "disabled");
@@ -71,6 +73,7 @@ async function onDelete(id) {
     el.children('div').removeClass('d-none')
     //console.log(id, el)
     await deleteType(id)
+    emit('onmakechange')
 }
 async function onAdd() {
     $('#btn-add').attr("disabled", "disabled");
@@ -78,6 +81,7 @@ async function onAdd() {
     $('#btn-add-spinner').removeClass('d-none')
 
     await addType(form.name)
+    emit('onmakechange')
 
     form.name = ''
     $('#btn-add').removeAttr("disabled", "disabled");

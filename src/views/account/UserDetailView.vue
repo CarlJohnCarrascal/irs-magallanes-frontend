@@ -1,48 +1,32 @@
 <script setup>
-import { onMounted } from 'vue';
-import { useRoute } from "vue-router";
-import useUser from '../../composables/user';
-import router from '../../router';
-
-const route = useRoute()
-const { user, errors, users, getUser, activateUser, deactivateUser, deleteUser } = useUser()
-
+import { onMounted,ref,watch } from 'vue';
+// import useUser from '../../composables/user'
+// const { user, getUser} = useUser()
 const selectedUser = []
-
-onMounted(async () => {
-    const id = route.params.id
-    console.log(id)
-    await getUser(id)
+const user = ref([])
+const props = defineProps({
+    user: ref([])
 })
+watch(() => props.user,
+    async (val) => {
+        var id = val
+        //await getUser(val.id)
+        user.value = val
+        console.log(val, 'sere')
+    }
+);
 
-async function onActivateAccount(){
-    await activateUser(user.value.id)
-    router.back()
-}
-async function onDeactivateAccount(){
-    await deactivateUser(user.value.id)
-    router.back()
-}
-
-async function onDeleteAccount() {
-    $('#myModal').modal('show')
-}
-async function onConfirmDeleteAccount(){
-    await deleteUser(user.id)
-    $('#myModal').modal('hide')
-    router.back()
-}
 
 </script>
 
 <template>
     <div>
-        <div class="d-flex align-items-center justify-content-between mb-4">
+        <!-- <div class="d-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Profile</h1>
             <a @click="$router.go(-1)" class="btn btn-sm m-2">
                 <i class="fas fa-times fa-md text-black-50"></i>
             </a>
-        </div>
+        </div> -->
         <section class="mb-4" style="background-color: #eee;">
             <div class="container py-4">
                 <div class="row">
@@ -109,15 +93,17 @@ async function onConfirmDeleteAccount(){
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="card-body">
                                 <div class="d-flex justify-content-end">
-                                    <button @click="onDeactivateAccount" v-if="user.status == 'active'" class="btn btn-danger">Deactivate Account</button>
-                                    <button @click="onActivateAccount" v-if="user.status == 'deactivated'" class="btn btn-success">Activate Account</button>
+                                    <button @click="onDeactivateAccount" v-if="user.status == 'active'"
+                                        class="btn btn-danger">Deactivate Account</button>
+                                    <button @click="onActivateAccount" v-if="user.status == 'deactivated'"
+                                        class="btn btn-success">Activate Account</button>
                                     <button @click="onDeleteAccount" class="btn btn-danger mx-1">Delete Account</button>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

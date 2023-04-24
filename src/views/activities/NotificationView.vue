@@ -57,7 +57,55 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue'
 
+import DataTable from 'datatables.net-vue3';
+import DataTablesCore from 'datatables.net-bs5';
+
+DataTable.use(DataTablesCore);
+const notifyTable = ref()
+const columns = [
+    { data: 'role', title: 'Role', class: 'text-capitalize fs-8 text-center align-middle' },
+    { data: 'fullname', title: 'Fullname', class: 'text-capitalize fs-8 text-center align-middle' },
+    { data: 'address', title: 'Address', class: 'text-capitalize fs-8 align-middle', },
+    { data: 'report_made', title: 'Total Report', class: 'text-capitalize fs-8 align-middle' },
+    { data: 'created_at', title: 'Sign-up Date', class: 'text-capitalize fs-8 align-middle' },
+    {
+        data: 'id',
+        class: '',
+        sortable: false,
+        render: function (o) {
+            var a = `<a data-id="` + o + `" id="btn-view-user" role="button"
+            class="btn btn-sm btn-primary mb-1 mx-1">
+                                    View
+                                </a>`
+            var aa = `<a data-id="` + o + `" id="btn-view-user" role="button"
+                                    class="btn btn-sm btn-primary mb-1 mx-1">
+                                    View
+                                </a>
+                                <div class="btn-group mb-1 mx-1">
+                                    <button type="button" class="btn btn-sm btn-danger dropdown-toggle"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Mark As
+                                    </button>
+                                    <ul class="dropdown-menu position-fixed" style="z-index: 20;">
+                                        <li><a data-id="`+ o + `" id="btn-deactivate-user" class="dropdown-item" role="button">Deactivate</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a data-id="`+ o + `" id="btn-delete-user" class="dropdown-item text-danger" role="button">Delete</a></li>
+                                    </ul>
+                                </div>`
+            return a;
+        }
+    },
+];
+const options = {
+    select: false,
+    responsive: true,
+    scrollY: '100%',
+    scrollX: '100%',
+}
 </script>
 
 <style scoped>
