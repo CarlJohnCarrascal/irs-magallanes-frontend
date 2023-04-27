@@ -26,7 +26,7 @@ export default function useIncident(){
             if(res.data.success){
                 errors.value = []
                 incidents.value = res.data.data
-                console.log(res.data)
+                //console.log(res.data)
             }else{
                 errors.value = res.data.data
             }
@@ -51,7 +51,7 @@ export default function useIncident(){
     const addIncident = async (incident) => {
         await axios.post('incidents', incident)
         .then((res) => {
-            //console.log(res)
+            //console.log(13,res)
             if(res.data.success){
                 incident.value = res.data.data
                 errors.value = []
@@ -61,7 +61,7 @@ export default function useIncident(){
         })
         .catch((err) => {
             errors.value = err.response.data.data
-            //console.log(err)
+            //console.log(11111,err)
         })
     }
     const updateIncident = async (incident) => {

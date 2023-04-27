@@ -497,7 +497,7 @@
                                                                     Severity:</td>
                                                                 <td class="fs-8 text-muted pl-2">
                                                                     {{ accidentDetailForm.severity }}
-                                                                    <span class="fs-8 text-danger" v-if="errors.severity">{{ errors.severity[0] }}</span>
+                                                                    <span class="fs-8 text-danger text-capitalize" v-if="errors.severity">{{ errors.severity[0] }}</span>
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -835,14 +835,14 @@ async function onSubmitReport() {
         'status': 'pending'
     }
 
-    console.log(incident)
+    //console.log(incident)
 
     await addIncident(incident)
     
     el.removeAttr('disabled')
     el.children('span').removeClass('d-none')
     el.children('div').addClass('d-none')
-
+    console.log(errors.value)
     if(errors.value.length <= 0){
         myModal.show()
         reset()

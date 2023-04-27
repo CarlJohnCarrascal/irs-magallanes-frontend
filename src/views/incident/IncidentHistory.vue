@@ -61,7 +61,7 @@
                         <h5 class="modal-title">Report Detail</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <IncidentDetail :view-only="false" :incident-item="selectedItemRef" @onedit="onEditItem"
+                    <IncidentDetails :view-only="false" :incident-item="selectedItemRef" @onedit="onEditItem"
                         @ondelete="onConfirmDelete" @onchangestatus="onChangeStatus" />
                 </div>
             </div>
@@ -122,7 +122,7 @@
 </template>
 
 <script setup>
-import IncidentDetail from '../incident/IncidentDetails.vue'
+import IncidentDetails from './IncidentDetails.vue'
 import EditReport from './EditReport.vue'
 import useIncident from '../../composables/incident'
 //import useAccount from '../../composables/account';

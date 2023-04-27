@@ -99,36 +99,6 @@ const router = createRouter({
       }
     },
     {
-      path: '/incident/:id/details',
-      name: 'reportdetails',
-      component: IncidentDetails,
-      props: true,
-      meta: {
-        requiredAuth: true,
-        title: 'Incident'
-      }
-    },
-    {
-      path: '/incident/:id/details',
-      name: 'reportdetails2',
-      component: IncidentDetails,
-      props: true,
-      meta: {
-        requiredAuth: true,
-        title: 'Incident'
-      }
-    },
-    {
-      path: '/incident/:id/details',
-      name: 'reportdetails3',
-      component: IncidentDetails,
-      props: true,
-      meta: {
-        requiredAuth: true,
-        title: 'Incident'
-      }
-    },
-    {
       path: '/incident/:id/edit',
       name: 'reportedit',
       component: IncidentEdit,
