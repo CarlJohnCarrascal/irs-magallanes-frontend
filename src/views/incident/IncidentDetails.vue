@@ -67,15 +67,23 @@
                                 <td class="fs-8 text-muted font-weight-bold pl-4 align-top">Member's:
                                 </td>
                                 <td class="fs-8 text-muted pl-2">
-                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member1 }}</span> <br v-if="incident.report_res.member1">
-                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member2 }}</span> <br v-if="incident.report_res.member2">
-                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member3 }}</span> <br v-if="incident.report_res.member3">
-                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member4 }}</span> <br v-if="incident.report_res.member4">
-                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member5 }}</span> <br v-if="incident.report_res.member5">
-                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member6 }}</span> <br v-if="incident.report_res.member6">
-                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member7 }}</span> <br v-if="incident.report_res.member7">
-                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member8 }}</span> <br v-if="incident.report_res.member8">
-                                <!-- {{ incident.report_res.member }} -->
+                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member1 }}</span> <br
+                                        v-if="incident.report_res.member1">
+                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member2 }}</span> <br
+                                        v-if="incident.report_res.member2">
+                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member3 }}</span> <br
+                                        v-if="incident.report_res.member3">
+                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member4 }}</span> <br
+                                        v-if="incident.report_res.member4">
+                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member5 }}</span> <br
+                                        v-if="incident.report_res.member5">
+                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member6 }}</span> <br
+                                        v-if="incident.report_res.member6">
+                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member7 }}</span> <br
+                                        v-if="incident.report_res.member7">
+                                    <span v-if="incident.report_res.member1">{{ incident.report_res.member8 }}</span> <br
+                                        v-if="incident.report_res.member8">
+                                    <!-- {{ incident.report_res.member }} -->
                                     <!-- <div v-for="item in incident.report_res.member">
                                         {{ item }} 
                                     </div> -->
@@ -213,15 +221,19 @@
             </div>
             <div class="row m-0" v-if="!viewOnly">
                 <div class="col gap-2" v-if="vv">
-                    <button @click="emit('onedit')" type="button"
-                        class="btn btn-sm btn-primary btn-edit-item ml-1">
+                    <button @click="generatePDF" type="button" class="btn btn-sm btn-secondary btn-edit-item ml-1">
+                        <span>Print</span>
+                        <div class="spinner-border spinner-border-sm d-none" role="status">
+                            <span class="sr-only"></span>
+                        </div>
+                    </button>
+                    <button @click="emit('onedit')" type="button" class="btn btn-sm btn-primary btn-edit-item ml-1">
                         <span>Edit</span>
                         <div class="spinner-border spinner-border-sm d-none" role="status">
                             <span class="sr-only"></span>
                         </div>
                     </button>
-                    <button @click="emit('ondelete')" type="button"
-                        class="btn btn-sm btn-danger btn-delete-item ml-1">
+                    <button @click="emit('ondelete')" type="button" class="btn btn-sm btn-danger btn-delete-item ml-1">
                         <span>Delete</span>
                         <div class="spinner-border spinner-border-sm d-none" role="status">
                             <span class="sr-only"></span>
@@ -247,8 +259,13 @@
 import { watch, ref } from 'vue';
 import useIncident from '../../composables/incident'
 import useAccount from '../../composables/account'
+import { jsPDF } from "jspdf";
+import useUser from '../../composables/user';
+
+const { getUser, user } = useUser()
 const { getIncident, incident, errors } = useIncident()
 const { getUserDetails, userDetails } = useAccount()
+const doc = new jsPDF();
 
 const vv = ref(false)
 const props = defineProps({
@@ -263,7 +280,7 @@ watch(() => props.incidentItem,
         await getIncident(val)
         await getUserDetails()
         //incident.value.report_res.member = incident.value.report_res.member.replaceAll('[', "").replaceAll(']', "").toString().split(',')
-        console.log(incident.value.userid, userDetails.value.id, userDetails.value.role, 'admin')
+        //console.log(incident.value.userid, userDetails.value.id, userDetails.value.role, 'admin')
         if (incident.value.userid == userDetails.value.id || userDetails.value.role == 'admin') {
             vv.value = true
         } else {
@@ -271,6 +288,62 @@ watch(() => props.incidentItem,
         }
     }
 );
+async function generatePDF() {
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    await getUser(incident.value.userid)
+    var date = new Date(incident.value.report_inf.date_of + " " + incident.value.report_inf.time_of)
+
+    doc.setFontSize(9)
+    doc.setProperties({
+        title: "Report"
+    });
+
+    //header
+    doc.setFont("courier", "bold");
+    doc.setFontSize(11)
+    doc.text("MDRRMO - Incident Reporting System", 15, 15);
+    doc.text("Magallanes, Sorsogon", 15, 21);
+    
+    //Informant
+    doc.setFont("courier", "normal");
+    doc.setFontSize(9)
+    doc.text("Report By: " + incident.value.report_inf.name, 15, 40)
+    if (user.value.role == 'admin') {
+        doc.text("Report Type: Call",15,46)
+    }else{
+        doc.text("Report Type: By User",15,46)
+    }
+    var d = monthNames[date.getMonth()] + " " + date.getDay().toString().padStart(2,"0") + ", " + date.getFullYear() + 
+    " " + date.getHours().toString().padStart(2,"0") + ":" + date.getMinutes().toString().padStart(2,"0")
+    doc.text("Date of Report: " + d, 100, 40);
+    doc.text("Report No: " + incident.value.id , 100, 46);
+    
+    var date2 = new Date(incident.value.datetime)
+    var d2 = monthNames[date2.getMonth()] + " " + date2.getDay().toString().padStart(2,"0") + ", " + date2.getFullYear() + 
+    " " + date2.getHours().toString().padStart(2,"0") + ":" + date2.getMinutes().toString().padStart(2,"0")
+
+    doc.setFont("courier", "bold");
+    doc.text("ACCIDENT DETAILS", 15, 56);
+
+    doc.setFont("courier", "normal");
+    doc.text("Type of Accident: " + incident.value.type, 15, 62);
+    doc.text("Location: " + incident.value.purok, 15, 67);
+    doc.text(incident.value.barangay, 34, 73);
+    doc.text("Severity: " + incident.value.severity.toString().toUpperCase(), 100, 62);
+    doc.text("Date and Time: " + d2 , 100, 67);
+    var des = ""
+    if(incident.value.description != null){
+        des = incident.value.description
+    }
+    doc.text("Description: " + des, 15, 79);
+    
+
+    doc.output('dataurlnewwindow');
+    //doc.autoPrint()
+    //doc.save("report.pdf");
+}
 
 
 </script>

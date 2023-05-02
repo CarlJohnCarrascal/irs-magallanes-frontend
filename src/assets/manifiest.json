@@ -1,11 +1,12 @@
 {
-    "name": "MDRRMO Magallanes - Incident Reporting System",
+    "name": "Incident Reporting System",
     "short_name": "MDRRMO - IRS",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#FFE9D2",
     "theme_color": "#FFE1C4",
     "orientation": "portrait-primary",
+    "version": "1.5",
     "icons": [
         {
             "src": "img/icons/icon-72x72.png",

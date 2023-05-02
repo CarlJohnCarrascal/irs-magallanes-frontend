@@ -238,65 +238,65 @@ onMounted(async () => {
 
     await getAllIncident(currentFilter.value, '')
     //await getUserDetails()
-    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-        var startdate = ""
-        var enddate = ""
-        var datenow = new Date()
-        var d = new Date(data[3])
-        console.log(data)
-        if (currentFilter.value == 'today') {
+    // $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+    //     var startdate = ""
+    //     var enddate = ""
+    //     var datenow = new Date()
+    //     var d = new Date(data[3])
+    //     console.log(data)
+    //     if (currentFilter.value == 'today') {
 
-            //if ( userDetails.value.id == data. )
-            if (
-                d.getDate() == datenow.getDate()
-            ) {
-                return true
-            }
-            return false
-        }
-        if (currentFilter.value == 'week') {
-            var day = datenow.getDay(),
-                diff = datenow.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
-            var startweek = new Date(datenow.setDate(diff))
-            var endweek = new Date(datenow.setDate(diff + 6))
+    //         //if ( userDetails.value.id == data. )
+    //         if (
+    //             d.getDate() == datenow.getDate()
+    //         ) {
+    //             return true
+    //         }
+    //         return false
+    //     }
+    //     if (currentFilter.value == 'week') {
+    //         var day = datenow.getDay(),
+    //             diff = datenow.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+    //         var startweek = new Date(datenow.setDate(diff))
+    //         var endweek = new Date(datenow.setDate(diff + 6))
 
-            //console.log(startweek, endweek)
+    //         //console.log(startweek, endweek)
 
-            if (
-                (d >= startweek) &&
-                (d <= endweek)
-            ) {
-                return true
-            }
-            return false
-        }
-        if (currentFilter.value == 'month') {
-            var firstDay = new Date(datenow.getFullYear(), datenow.getMonth(), 1);
-            var lastDay = new Date(datenow.getFullYear(), datenow.getMonth() + 1, 0);
+    //         if (
+    //             (d >= startweek) &&
+    //             (d <= endweek)
+    //         ) {
+    //             return true
+    //         }
+    //         return false
+    //     }
+    //     if (currentFilter.value == 'month') {
+    //         var firstDay = new Date(datenow.getFullYear(), datenow.getMonth(), 1);
+    //         var lastDay = new Date(datenow.getFullYear(), datenow.getMonth() + 1, 0);
 
-            //console.log(firstDay, lastDay)
+    //         //console.log(firstDay, lastDay)
 
-            if (
-                (d >= firstDay) &&
-                (d <= lastDay)
-            ) {
-                return true
-            }
-            return false
-        }
-        if (currentFilter.value == 'year') {
-            //console.log(d.getFullYear, datenow.getFullYear)
-            if (
-                (d.getFullYear() == datenow.getFullYear())
-            ) {
-                return true
-            }
-            return false
-        }
-        if (currentFilter.value == 'all') {
-            return true
-        }
-    });
+    //         if (
+    //             (d >= firstDay) &&
+    //             (d <= lastDay)
+    //         ) {
+    //             return true
+    //         }
+    //         return false
+    //     }
+    //     if (currentFilter.value == 'year') {
+    //         //console.log(d.getFullYear, datenow.getFullYear)
+    //         if (
+    //             (d.getFullYear() == datenow.getFullYear())
+    //         ) {
+    //             return true
+    //         }
+    //         return false
+    //     }
+    //     if (currentFilter.value == 'all') {
+    //         return true
+    //     }
+    // });
 
     try {
         viewModalEl = $('#view-item-modal')
