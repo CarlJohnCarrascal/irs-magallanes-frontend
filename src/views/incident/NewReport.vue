@@ -613,7 +613,7 @@
             </div>
         </div>
         <!-- Modal -->
-        <div class="modal fade" id="succes-report-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="succes-report-modal12" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -723,8 +723,8 @@ const responderForm = ref({
 })
 const isMed = ref([])
 
-var mymodalEl = ""
-var myModal = ""
+var ssmymodalEl = ""
+var ssmyModal = ""
 async function getCurrentDateTime(){
     var currentDate = new Date()
     var h = currentDate.getHours()
@@ -755,8 +755,8 @@ onMounted(async () => {
     await getAllBrgy()
     await getAllTypes()
 
-    mymodalEl = $('#succes-report-modal')
-    myModal = Modal.getOrCreateInstance(mymodalEl)
+    ssmymodalEl = $('#succes-report-modal12')
+    ssmyModal = Modal.getOrCreateInstance(ssmymodalEl)
 
     $('.section-item').hide()
     $('.section-item[data=first]').show()
@@ -844,7 +844,7 @@ async function onSubmitReport() {
     el.children('div').addClass('d-none')
     console.log(errors.value)
     if(errors.value.length <= 0){
-        myModal.show()
+        ssmyModal.show()
         reset()
     }
 }

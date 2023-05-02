@@ -631,11 +631,27 @@
                                     </div>
                                 </div>
 
+                                <div class="section-item" style="display: none;">
+                                    <div class="card shadow">
+                                        <div class="card-header">
+                                            <h6 class="m-0 font-weight-bold text-primary">Print Report?</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <span>Click the button if you want to print the report or save it as PDF file.</span>
+                                            <div class="row d-flex justify-content-center">
+                                                <button @click="printReport2"
+                                                    type="button"
+                                                    class="btn btn-primary">PRINT</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="card-footer d-flex justify-content-between">
                                 <a class="btn btn-sm btn-facebook btn-prev" @click="goBack()">Prev</a>
                                 <a class="btn btn-sm btn-facebook btn-next" @click="goForward()">Next</a>
-                                <button type="button" @click="onSubmitReport()" class="btn btn-sm btn-facebook btn-submit"
+                                <button type="button" @click="onSubmitReport2()" class="btn btn-sm btn-facebook btn-submit"
                                     style="display: none;">
                                     <span>Update</span>
                                     <div class="spinner-border spinner-border-sm d-none" role="status">
@@ -645,24 +661,6 @@
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-        <!-- Modal -->
-        <div class="modal fade" id="succes-report-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Saved successfully!</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Print the report?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button @click="printReport()" type="button" class="btn btn-primary">Print</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -685,7 +683,16 @@ const emit = defineEmits(['onapprove', 'ondelete'])
 
 watch(() => props.incidentItem,
     async (val) => {
+        
         await getIncident(val)
+        
+        itypes.value = []
+
+        await getUser()
+        await getAllBrgy()
+        await getAllTypes()
+        reset()
+
         console.log(val, incident.value)
         informantForm.value.name = incident.value.report_inf.name
         informantForm.value.address = incident.value.report_inf.address
@@ -821,10 +828,11 @@ const responderForm = ref({
 })
 const isMed = ref([])
 
-var mymodalEl = ""
-var myModal = ""
+var mymodalEl333 = ""
+var myModal333 = ""
 
 onMounted(async () => {
+    //reset()
     await getUser()
     await getAllBrgy()
     await getAllTypes()
@@ -832,8 +840,8 @@ onMounted(async () => {
     $('.section-item').hide()
     $('.section-item[data=first]').show()
 
-    mymodalEl = $('#succes-report-modal')
-    myModal = Modal.getOrCreateInstance(mymodalEl)
+    //mymodalEl333 = $('#succes-report-modal333')
+    //myModal333 = Modal.getOrCreateInstance(mymodalEl333)
 
 })
 
@@ -880,7 +888,7 @@ async function onChooseType(id) {
     goForward()
 }
 
-async function onSubmitReport() {
+async function onSubmitReport2() {
 
     var el = $('.btn-submit')
     el.attr("disabled", "disabled")
@@ -908,47 +916,24 @@ async function onSubmitReport() {
     el.children('div').addClass('d-none')
 
     if (errors.value.length <= 0) {
-        myModal.show()
-        //reset()
+        //myModal333.show()
+        goForward()
+        $('.btn-next').hide()
+        $('.btn-prev').hide()
+        $('.btn-submit').hide()
+       //reset()
     }
 }
-function printReport() {
+function printReport2() {
 
 }
 
 function reset() {
 
-    if (role == 'admin') {
-        informantForm.value.name = ''
-        informantForm.value.address = ''
-        informantForm.value.phone = ''
-    }
-    getCurrentDateTime()
-
-    accidentType.value = []
-    patientList.value = []
-    accidentDetailForm.value.barangay = ''
-    accidentDetailForm.value.purok = ''
-    accidentDetailForm.value.specific_location = ''
-    accidentDetailForm.value.severity = ''
-    accidentDetailForm.value.description = ''
-    responderForm.value.leader = ''
-    responderForm.value.driver = ''
-    responderForm.value.member1 = ''
-    responderForm.value.member2 = ''
-    responderForm.value.member3 = ''
-    responderForm.value.member4 = ''
-    responderForm.value.member5 = ''
-    responderForm.value.member6 = ''
-    responderForm.value.member7 = ''
-    responderForm.value.member8 = ''
-    responderForm.value.member9 = ''
-    responderForm.value.member10 = ''
-
-
     $('#accident-type-items').removeClass('btn-danger bg-gradient-danger text-white')
 
     $('.btn-next').show()
+    $('.btn-prev').show()
     $('.btn-prev').attr('disabled', 'disabled')
     $('.btn-submit').hide()
 

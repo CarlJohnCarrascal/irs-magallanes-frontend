@@ -46,6 +46,7 @@ export default function useNotification() {
             })
             .catch(async (err) => {
                 nerrors.value = err.response.data
+                console.log(err.response.data)
             })
     }
     const markSeen = async (id) => {
@@ -56,6 +57,7 @@ export default function useNotification() {
             })
             .catch(async (err) => {
                 nerrors.value = err.response.data
+                console.log(err.response.data)
             })
     }
 

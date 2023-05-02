@@ -114,6 +114,11 @@
                             </tr>
                             <tr>
                                 <td class="fs-8 text-muted font-weight-bold pl-4 text-nowrap">
+                                    Status:</td>
+                                <td class="fs-8 text-muted pl-2 text-capitalize">{{ incident.status }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fs-8 text-muted font-weight-bold pl-4 text-nowrap">
                                     Type of Accident:</td>
                                 <td class="fs-8 text-muted pl-2">{{ incident.type }}</td>
                             </tr>
@@ -330,7 +335,8 @@ async function generatePDF() {
     doc.setFont("courier", "normal");
     doc.text("Type of Accident: " + incident.value.type, 15, 62);
     doc.text("Location: " + incident.value.purok, 15, 67);
-    doc.text(incident.value.barangay, 34, 73);
+    doc.text(incident.value.barangay + " " + incident.value.specific_loacation, 34, 73);
+    //doc.text(incident.value.specific_location, 34, 73);
     doc.text("Severity: " + incident.value.severity.toString().toUpperCase(), 100, 62);
     doc.text("Date and Time: " + d2 , 100, 67);
     var des = ""
@@ -339,6 +345,7 @@ async function generatePDF() {
     }
     doc.text("Description: " + des, 15, 79);
     
+
 
     doc.output('dataurlnewwindow');
     //doc.autoPrint()

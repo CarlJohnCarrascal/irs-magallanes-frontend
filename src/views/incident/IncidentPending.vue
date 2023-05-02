@@ -25,14 +25,14 @@
                 </div>
                 <div class="col-lg-6 col-md-8 col-sm-12 d-flex fs-8 mt-2">
                     <div class="form-check">
-                        <input @change="loadIncidents" v-model="myReportOnlyChk" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <input @change="loadIncidents" v-model="myReportOnlyChk" class="form-check-input" type="checkbox"
+                            value="" id="flexCheckDefault">
                         <label class="form-check-label align-center" for="flexCheckDefault">
                             My Report Only
                         </label>
                     </div>
                 </div>
-                <div v-if="currentFilter == 'custom'"
-                    class="col-lg-6 col-md-8 col-sm-12 d-flex fs-8 mt-1">
+                <div v-if="currentFilter == 'custom'" class="col-lg-6 col-md-8 col-sm-12 d-flex fs-8 mt-1">
                     <div class=" input-group-sm">
                         <label for="startDate">Start</label>
                         <input @change="loadIncidents" v-model="customDateStart" id="startDate"
@@ -46,15 +46,15 @@
                 </div>
             </div>
             <div class="">
-                <DataTable :data="incidents" id="pending-table" class="table table-hover" :columns="columns" :options="options"
-                    :ref="pendingTable">
+                <DataTable :data="incidents" id="pending-table" class="table table-hover" :columns="columns"
+                    :options="options" :ref="pendingTable">
                 </DataTable>
             </div>
         </div>
 
         <!-- view detail modal -->
-        <div class="modal fade" id="view-item-modal-pending" tabindex="99999" role="dialog" aria-labelledby="myLargeModalLabel"
-            aria-hidden="true">
+        <div class="modal fade" id="view-item-modal-pending" tabindex="99999" role="dialog"
+            aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -62,13 +62,13 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <IncidentDetail :incident-item="selectedItemRef" @onapprove="onConfirmApprove" @onedit="onEditItem"
-                        @ondelete="onConfirmDelete"  @onchangestatus="changestatus"/>
+                        @ondelete="onConfirmDelete" @onchangestatus="changestatus" />
                 </div>
             </div>
         </div>
         <!-- edit item modal -->
-        <div class="modal fade" id="edit-item-modal-pending" tabindex="9999" role="dialog" aria-labelledby="myLargeModalLabel2"
-            aria-hidden="true">
+        <div class="modal fade" id="edit-item-modal-pending" tabindex="9999" role="dialog"
+            aria-labelledby="myLargeModalLabel2" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -143,8 +143,8 @@
             </div>
         </div>
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-            <div id="toast-delete-pending" class="toast hide bg-danger" role="alert" aria-live="assertive" data-bs-delay="1000"
-                aria-atomic="true">
+            <div id="toast-delete-pending" class="toast hide bg-danger" role="alert" aria-live="assertive"
+                data-bs-delay="1000" aria-atomic="true">
                 <div class="toast-body text-primary col">
                     Report has been deleted!
                 </div>
@@ -175,7 +175,7 @@ const columns = [
     { data: 'fulllocation', title: 'Location', class: 'text-capitalize fs-8 align-middle', },
     { data: 'datetime', title: 'Datetime', class: 'text-capitalize fs-8 align-middle' },
     {
-        data: 'severity', title: 'Severity',class: 'text-center fs-8 align-middle',
+        data: 'severity', title: 'Severity', class: 'text-center fs-8 align-middle',
         render: function (d) {
             return `<span class="fs-7 fw-bold text-capitalize s-` + d + `">` + d + `</span>`
         }
@@ -195,7 +195,7 @@ const columns = [
                                     class="btn btn-sm btn-primary m-1 fs-9">
                                     View
                                 </a>`
-                            var a =    `<div class="dropdown m-1">
+            var a = `<div class="dropdown m-1">
                                     <button type="button" class="btn btn-sm btn-primary dropdown-toggle fs-9S" data-bs-toggle="dropdown" style="z-index: 9999999">
                                         Mark As
                                     </button>
@@ -305,18 +305,18 @@ onMounted(async () => {
     });
 
     viewModalEl = $('#view-item-modal-pending')
-        viewModal = Modal.getOrCreateInstance(viewModalEl)
-        editModalEl = $('#edit-item-modal-pending')
-        editModal = Modal.getOrCreateInstance(editModalEl)
-        approveModalEl = $('#confirm-approve-modal-pending')
-        approveModal = Modal.getOrCreateInstance(approveModalEl)
-        deleteModalEl = $('#confirm-delete-modal-pending')
-        deleteModal = Modal.getOrCreateInstance(deleteModalEl)
+    viewModal = Modal.getOrCreateInstance(viewModalEl)
+    editModalEl = $('#edit-item-modal-pending')
+    editModal = Modal.getOrCreateInstance(editModalEl)
+    approveModalEl = $('#confirm-approve-modal-pending')
+    approveModal = Modal.getOrCreateInstance(approveModalEl)
+    deleteModalEl = $('#confirm-delete-modal-pending')
+    deleteModal = Modal.getOrCreateInstance(deleteModalEl)
 
-        approveToastel = $('#toast-approve-pending')
-        approveToaste = Toast.getOrCreateInstance(approveToastel)
-        deleteToastel = $('#toast-delete-pending')
-        deleteToaste = Toast.getOrCreateInstance(deleteToastel)
+    approveToastel = $('#toast-approve-pending')
+    approveToaste = Toast.getOrCreateInstance(approveToastel)
+    deleteToastel = $('#toast-delete-pending')
+    deleteToaste = Toast.getOrCreateInstance(deleteToastel)
 
     $('#pending-table').on('click', 'a#btn-view-detail-pending', function (e) {
         e.preventDefault();
@@ -361,17 +361,17 @@ async function loadIncidents() {
     if (currentFilter.value == 'custom') {
         var dd1 = new Date(customDateStart.value)
         //dd1.setDate(dd1.getDate() - 1)
-        dd1.setHours(0,0,0,0)
+        dd1.setHours(0, 0, 0, 0)
         var dd2 = new Date(customDateEnd.value)
         //dd2.setDate(dd2.getDate() + 1)
-        dd2.setHours(24,59,59,59)
+        dd2.setHours(24, 59, 59, 59)
 
         var d1 = Date.parse(dd1) / 1000
         var d2 = Date.parse(dd2) / 1000
-        await getAllIncident(currentFilter.value,'pending', d1 , d2, myReportOnlyChk.value)
+        await getAllIncident(currentFilter.value, 'pending', d1, d2, myReportOnlyChk.value)
         //console.log(currentFilter.value,'', d1 , d2, errors.value, incidents.value)
-    }else{
-        await getAllIncident(currentFilter.value,'pending','','',myReportOnlyChk.value)
+    } else {
+        await getAllIncident(currentFilter.value, 'pending', '', '', myReportOnlyChk.value)
         //console.log(currentFilter.value,'', errors.value, incidents.value)
     }
 }
@@ -413,7 +413,7 @@ async function onConfirmDelete() {
     viewModal.hide()
     dtpending.draw()
 }
-async function changestatus(d){
+async function changestatus(d) {
     await updateIncidentStatus(d, selectedItemRef.value)
     await loadIncidents()
 }

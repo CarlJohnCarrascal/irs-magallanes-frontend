@@ -31,20 +31,20 @@ var xviewModal2 = ""
 var xeditModalEl = ""
 var xeditModal = ""
 
-onMounted(async () => {
+onMounted(() => {
 
     xviewModalEl = $('#xview-item-modal')
     xviewModal = Modal.getOrCreateInstance(xviewModalEl)
     xviewModalEl2 = $('#xview-item2-modal')
     xviewModal2 = Modal.getOrCreateInstance(xviewModalEl2)
     xeditModalEl = $('#xedit-item-modal')
-        xeditModal = Modal.getOrCreateInstance(xeditModalEl)
+    xeditModal = Modal.getOrCreateInstance(xeditModalEl)
 
-    await getUserDetails()
+    getUserDetails()
     setInterval(async () => {
-        await getNewNotifications()
-        await getNotificationsCount()
-    }, 5000);
+        getNewNotifications()
+        getNotificationsCount()
+    }, 30000);
 })
 
 watchEffect(async () => {
@@ -60,7 +60,7 @@ watch(() => nnotifications.value,
 async function viewDetails(n) {
 
     if (n.type == 'New User') {
-        await getUser(n.notif_id)
+        getUser(n.notif_id)
         selectedUser.value = user.value
         xviewModal.show()
     }
@@ -131,8 +131,8 @@ async function onChangeStatus(d) {
                         </div>
                         <div>
                             <div class="small text-gray-500">{{ n.created_at }}</div>
-                            <span v-if="n.isseen">{{ n.message }}</span>
-                            <span v-if="!n.isseen" class="font-weight-bold ">{{ n.message }}</span>
+                            <span v-if="n.isalreadyseen">{{ n.message }}</span>
+                            <span v-if="!n.isalreadyseen" class="font-weight-bold ">{{ n.message }}</span>
                         </div>
                     </a>
                     <!-- <div>
