@@ -5,6 +5,7 @@ export default function useIncident(){
 
     const incidents = ref([])
     const incident = ref([])
+    const addedIncident = ref([])
     const errors = ref([])
     const patients = ref([])
 
@@ -53,15 +54,16 @@ export default function useIncident(){
         .then((res) => {
             //console.log(13,res)
             if(res.data.success){
-                incident.value = res.data.data
+                addedIncident.value = res.data.data
                 errors.value = []
+                //console.log("added",res.data.data)
             }else{
                 errors.value = res.data.data
             }
         })
         .catch((err) => {
             errors.value = err.response.data.data
-            //console.log(11111,err)
+            //console.log("error add",err)
         })
     }
     const updateIncident = async (incident) => {
@@ -148,7 +150,7 @@ export default function useIncident(){
 
     return {
         getAllIncident, getIncident, addIncident, deleteIncident, approveIncident, updateIncident, updateIncidentStatus, getAllPatient,
-        incidents, incident, patients,
+        incidents, incident, patients, addedIncident,
         errors,
     }
 

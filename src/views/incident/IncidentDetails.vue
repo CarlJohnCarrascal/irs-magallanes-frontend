@@ -264,14 +264,11 @@
 import { watch, ref } from 'vue';
 import useIncident from '../../composables/incident'
 import useAccount from '../../composables/account'
-import { jsPDF } from "jspdf";
-import useUser from '../../composables/user';
+import usePrint from '../../composables/print'
 
-const { getUser, user } = useUser()
 const { getIncident, incident, errors } = useIncident()
 const { getUserDetails, userDetails } = useAccount()
-const doc = new jsPDF();
-
+const { printIncident } = usePrint()
 const vv = ref(false)
 const props = defineProps({
     incidentItem: ref([]),
@@ -294,62 +291,7 @@ watch(() => props.incidentItem,
     }
 );
 async function generatePDF() {
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-    await getUser(incident.value.userid)
-    var date = new Date(incident.value.report_inf.date_of + " " + incident.value.report_inf.time_of)
-
-    doc.setFontSize(9)
-    doc.setProperties({
-        title: "Report"
-    });
-
-    //header
-    doc.setFont("courier", "bold");
-    doc.setFontSize(11)
-    doc.text("MDRRMO - Incident Reporting System", 15, 15);
-    doc.text("Magallanes, Sorsogon", 15, 21);
-    
-    //Informant
-    doc.setFont("courier", "normal");
-    doc.setFontSize(9)
-    doc.text("Report By: " + incident.value.report_inf.name, 15, 40)
-    if (user.value.role == 'admin') {
-        doc.text("Report Type: Call",15,46)
-    }else{
-        doc.text("Report Type: By User",15,46)
-    }
-    var d = monthNames[date.getMonth()] + " " + date.getDay().toString().padStart(2,"0") + ", " + date.getFullYear() + 
-    " " + date.getHours().toString().padStart(2,"0") + ":" + date.getMinutes().toString().padStart(2,"0")
-    doc.text("Date of Report: " + d, 100, 40);
-    doc.text("Report No: " + incident.value.id , 100, 46);
-    
-    var date2 = new Date(incident.value.datetime)
-    var d2 = monthNames[date2.getMonth()] + " " + date2.getDay().toString().padStart(2,"0") + ", " + date2.getFullYear() + 
-    " " + date2.getHours().toString().padStart(2,"0") + ":" + date2.getMinutes().toString().padStart(2,"0")
-
-    doc.setFont("courier", "bold");
-    doc.text("ACCIDENT DETAILS", 15, 56);
-
-    doc.setFont("courier", "normal");
-    doc.text("Type of Accident: " + incident.value.type, 15, 62);
-    doc.text("Location: " + incident.value.purok, 15, 67);
-    doc.text(incident.value.barangay + " " + incident.value.specific_loacation, 34, 73);
-    //doc.text(incident.value.specific_location, 34, 73);
-    doc.text("Severity: " + incident.value.severity.toString().toUpperCase(), 100, 62);
-    doc.text("Date and Time: " + d2 , 100, 67);
-    var des = ""
-    if(incident.value.description != null){
-        des = incident.value.description
-    }
-    doc.text("Description: " + des, 15, 79);
-    
-
-
-    doc.output('dataurlnewwindow');
-    //doc.autoPrint()
-    //doc.save("report.pdf");
+    await printIncident(incident.value)
 }
 
 

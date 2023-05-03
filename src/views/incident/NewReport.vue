@@ -640,13 +640,14 @@ import useAccount from '../../composables/account';
 import useBarangay from '../../composables/barangay';
 import useIncidenCause from '../../composables/incidentcause';
 import useIncident from '../../composables/incident'
-import router from '../../router';
+import usePrint from '../../composables/print';
 
 const instance = getCurrentInstance();
 const { role, userDetails, getUser,getUserDetails } = useAccount()
 const { getAllBrgy, barangays } = useBarangay()
 const { getAllTypes, getAllCauses, itypes, causes } = useIncidenCause()
-const { addIncident, errors } =  useIncident()
+const { addIncident, addedIncident, errors } =  useIncident()
+const { printIncident } = usePrint()
 
 const informantForm = ref({
     name: '',
@@ -823,7 +824,7 @@ async function onSubmitReport() {
     el.children('div').removeClass('d-none')
 
     //await submitReport()
-    let incident = {
+    let incidentr = {
         'informant': informantForm.value,
         'patients': patientList.value,
         'responder': responderForm.value,
@@ -835,21 +836,23 @@ async function onSubmitReport() {
         'status': 'pending'
     }
 
-    //console.log(incident)
 
-    await addIncident(incident)
+    await addIncident(incidentr)
+    //console.log("teest ", addedIncident.value)
     
     el.removeAttr('disabled')
     el.children('span').removeClass('d-none')
     el.children('div').addClass('d-none')
-    console.log(errors.value)
     if(errors.value.length <= 0){
         ssmyModal.show()
         reset()
     }
 }
-function printReport() {
 
+async function printReport() {
+    //console.log("on print", addedIncident.value)
+    
+    await printIncident(addedIncident.value)
 }
 
 function reset(){
