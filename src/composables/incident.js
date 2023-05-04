@@ -49,8 +49,9 @@ export default function useIncident(){
             errors.value = err.data.data
         })
     }
-    const addIncident = async (incident) => {
-        await axios.post('incidents', incident)
+    const addIncident = async (aincident) => {
+        console.log('to add', aincident)
+        await axios.post('incidents', aincident)
         .then((res) => {
             //console.log(13,res)
             if(res.data.success){
@@ -66,13 +67,13 @@ export default function useIncident(){
             //console.log("error add",err)
         })
     }
-    const updateIncident = async (incident) => {
-        //console.log(incident)
-        await axios.put('incidents/' + incident.id, incident)
+    const updateIncident = async (aincident) => {
+        console.log("to edit", aincident)
+        await axios.put('incidents/' + aincident.id, aincident)
         .then((res) => {
-            //console.log(res)
+            console.log(res.data)
             if(res.data.success){
-                incident.value = res.data.data
+                addedIncident.value = res.data.data
                 errors.value = []
             }else{
                 errors.value = res.data.data

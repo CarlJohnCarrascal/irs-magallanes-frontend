@@ -3,7 +3,7 @@
     <div class="col-md-6 m-0 p-1" v-for="i in ca">
         <div class="card shadow p-0 mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">{{ i.datasets[0].label }} Chart</h6>
+                <h6 class="m-0 font-weight-bold text-primary">{{ i.datasets[0].label }} Patient Chart</h6>
             </div>
             <div class="card-body p-2 overflow-auto">
                 <div class="chart-area" id="chartbar">

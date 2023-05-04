@@ -3,10 +3,17 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex align-items-center justify-content-between mb-4">
             <h6 class="m-0 font-weight-bold text-primary">Report History</h6>
+            <div>
+                
+            <a class="btn btn-sm bg-secondary shadow-sm mr-1">
+                <i class="fas fa-file-csv fa-sm text-white-50"></i> 
+                <span class="d-none d-sm-inline-block text-white ml-1">Export CSV</span>
+            </a>
             <RouterLink to="/incident/new" class="btn btn-sm bg-danger shadow-sm">
                 <i class="fas fa-plus fa-sm text-white-50"></i> <span class="d-none d-sm-inline-block text-white ml-1">Add
                     New</span>
             </RouterLink>
+            </div>
         </div>
         <div class="card-body mt-0 pt-0">
             <div class="row mb-2 d-flex justify-content-between">
@@ -186,6 +193,7 @@ const options = {
     responsive: true,
     scrollY: '100%',
     scrollX: '100%',
+    order: [[3, 'desc']],
 }
 
 const currentFilter = ref([])

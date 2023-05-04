@@ -674,6 +674,8 @@ import useAccount from '../../composables/account';
 import useBarangay from '../../composables/barangay';
 import useIncidenCause from '../../composables/incidentcause';
 import useIncident from '../../composables/incident'
+import usePrint from '../../composables/print';
+const { printIncident } = usePrint()
 
 const props = defineProps({
     incidentItem: ref([])
@@ -707,8 +709,18 @@ watch(() => props.incidentItem,
         var result = []
         var json = incident.value.report_pat
         var keys = Object.keys(json)
-        keys.forEach(function(key){
-            result.push(json[key])
+        json.forEach(function(key){
+            console.log(key, key.name)
+            var p = {
+                'name': key['name'],
+                'address': key['address'],
+                'age': key['age'],
+                'cause': key['cause'],
+                'gender': key['gender'],
+                'status': key['status'],
+                'otherCause': "",
+            }
+            result.push(p)
         })
         console.log("patient lsit", incident.value.report_pat, result)
         patientList.value = result
@@ -751,7 +763,7 @@ const instance = getCurrentInstance();
 const { role, userDetails, getUser, getUserDetails } = useAccount()
 const { getAllBrgy, barangays } = useBarangay()
 const { getAllTypes, getAllCauses, itypes, causes } = useIncidenCause()
-const { updateIncident, getIncident, incident, errors } = useIncident()
+const { updateIncident, getIncident, incident,addedIncident, errors } = useIncident()
 
 const informantForm = ref({
     name: '',
@@ -924,8 +936,8 @@ async function onSubmitReport2() {
        //reset()
     }
 }
-function printReport2() {
-
+async function printReport2() {
+    await printIncident(addedIncident.value)
 }
 
 function reset() {

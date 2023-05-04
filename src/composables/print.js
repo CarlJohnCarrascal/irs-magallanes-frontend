@@ -4,9 +4,10 @@ import { jsPDF } from "jspdf";
 export default function usePrint() {
 
     const { getUser, user } = useUser()
-    const doc = new jsPDF();
+    //const doc = new jsPDF();
 
     const printIncident = async (incident) => {
+        let doc = new jsPDF()
         const monthNames = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
         ];
@@ -181,20 +182,20 @@ export default function usePrint() {
         doc.text("Leader: " + rl, 15, countp + 7);
         doc.text("Driver: " + rd, 15, countp + 13);
         doc.text("Member's: " + rm1, 15, countp + 19);
-        doc.text( rm2, 40, countp + 25);
-        doc.text(rm3, 30, countp + 37);
-        doc.text(rm4, 30, countp + 43);
-        doc.text(rm5, 30, countp + 49);
-        doc.text(rm6, 30, countp + 55);
-        doc.text(rm7, 30, countp + 61);
-        doc.text(rm8, 30, countp + 67);
-        doc.text(rm9, 30, countp + 73);
-        doc.text(rm10, 30, countp + 79);
+        doc.text( rm2, 34, countp + 25);
+        doc.text(rm3, 34, countp + 31);
+        doc.text(rm4, 34, countp + 37);
+        doc.text(rm5, 34, countp + 43);
+        doc.text(rm6, 34, countp + 59);
+        doc.text(rm7, 34, countp + 65);
+        doc.text(rm8, 34, countp + 71);
+        doc.text(rm9, 34, countp + 77);
+        doc.text(rm10, 34, countp + 83);
 
-        doc.output('dataurlnewwindow',{
-            filename: incident.id + "" + (Math.random(10) * 100)
+        doc.autoPrint()
+        doc.output('pdfobjectnewwindow',{
+            filename: incident.id + "" + (Math.random(10) * 100).toString().replace(".","")
         });
-        //doc.autoPrint()
         //doc.save("report.pdf");
     }
 
