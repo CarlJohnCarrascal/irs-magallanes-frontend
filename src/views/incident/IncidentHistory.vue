@@ -5,7 +5,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Report History</h6>
             <div>
                 
-            <a class="btn btn-sm bg-secondary shadow-sm mr-1">
+            <a class="btn btn-sm bg-secondary shadow-sm mr-1" @click="exportCSV">
                 <i class="fas fa-file-csv fa-sm text-white-50"></i> 
                 <span class="d-none d-sm-inline-block text-white ml-1">Export CSV</span>
             </a>
@@ -132,6 +132,8 @@
 import IncidentDetails from './IncidentDetails.vue'
 import EditReport from './EditReport.vue'
 import useIncident from '../../composables/incident'
+import usePrint from '../../composables/print'
+
 //import useAccount from '../../composables/account';
 import { onMounted, ref } from 'vue';
 import router from '../../router';
@@ -217,6 +219,7 @@ var deleteToastel = ""
 
 const { getAllIncident, errors, incidents, deleteIncident, updateIncidentStatus } = useIncident()
 //const { getUserDetails, userDetails } = useAccount()
+const { exportCSV } = usePrint()
 
 onMounted(async () => {
 
@@ -396,7 +399,6 @@ async function onConfirmDelete() {
     viewModal.hide()
     //dt.draw()
 }
-
 async function onChangeStatus(d) {
     await updateIncidentStatus(d, selectedItemRef.value)
     await loadIncidents()
