@@ -32,12 +32,15 @@ onMounted(async () => {
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <RouterLink class="sidebar-brand d-flex align-items-center justify-content-center" to="/dashboard">
+        <!-- <RouterLink class="sidebar-brand d-flex align-items-center justify-content-center" to="/dashboard">
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
             <div class="sidebar-brand-text mx-3">IRS - {{ role }}</div>
-        </RouterLink>
+        </RouterLink> -->
+        <div class="row m-1 mt-4 mb-2">
+            <img src="../assets/irs.png" width="100" height="130" alt="" srcset="">
+        </div>
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
