@@ -5,7 +5,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Report History</h6>
             <div>
                 
-            <a class="btn btn-sm bg-secondary shadow-sm mr-1" @click="exportCSV">
+            <a class="btn btn-sm bg-secondary shadow-sm mr-1" @click="onExportCSV">
                 <i class="fas fa-file-csv fa-sm text-white-50"></i> 
                 <span class="d-none d-sm-inline-block text-white ml-1">Export CSV</span>
             </a>
@@ -402,6 +402,24 @@ async function onConfirmDelete() {
 async function onChangeStatus(d) {
     await updateIncidentStatus(d, selectedItemRef.value)
     await loadIncidents()
+}
+async function onExportCSV(){
+    if (currentFilter.value == 'custom') {
+        var dd1 = new Date(customDateStart.value)
+        //dd1.setDate(dd1.getDate() - 1)
+        dd1.setHours(0, 0, 0, 0)
+        var dd2 = new Date(customDateEnd.value)
+        //dd2.setDate(dd2.getDate() + 1)
+        dd2.setHours(24, 59, 59, 59)
+
+        var d1 = Date.parse(dd1) / 1000
+        var d2 = Date.parse(dd2) / 1000
+        await exportCSV(currentFilter.value, '', d1, d2, myReportOnlyChk.value)
+        //console.log(currentFilter.value,'', d1 , d2, errors.value, incidents.value)
+    } else {
+        await exportCSV(currentFilter.value, '', '', '', myReportOnlyChk.value)
+        //console.log(currentFilter.value,'', errors.value, incidents.value)
+    }
 }
 </script>
 

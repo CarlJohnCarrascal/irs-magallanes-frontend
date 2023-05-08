@@ -201,15 +201,34 @@ export default function usePrint() {
         //doc.save("report.pdf");
     }
 
-    const exportCSV = async () => {
-        await getAllIncident('all', '', '', '', false)
+    const exportCSV = async (f, t, d1, d2, own) => {
+        await getAllIncident(f, t, d1, d2, own)
         //define the heading for each row of the data  
-        var csv = 'Name,Profession\n';
+        var csv = 'ID,Type,Severity,Location,Status,Date and time\n';
 
         //merge the data with CSV  
         incidents.value.forEach(function (row) {
-            csv += row.join(',')
-            csv += "\n"
+            csv += row.id + ',' + row.type + ',' + row.severity + ',"' + row.fulllocation + '",' + row.status + ',' + row.datetime + '\n'
+            
+            csv += ',Informant:,' + row.report_inf.name + ',"' + row.report_inf.address + '",' + row.report_inf.phone + ',' + row.report_inf.date_of + ',' + row.report_inf.time_of + '\n'   
+            csv += ',Responder:,' + row.report_res.leader + ',' + 
+                        row.report_res.driver + ',' + 
+                        row.report_res.member1 + ',' + 
+                        row.report_res.member2 + ',' + 
+                        row.report_res.member3 + ',' + 
+                        row.report_res.member4 + ',' + 
+                        row.report_res.member5 + ',' + 
+                        row.report_res.member6 + ',' + 
+                        row.report_res.member7 + ',' +
+                        row.report_res.member8 + ',' + 
+                        row.report_res.member9 + ',' + 
+                        row.report_res.member10 + '\n'
+            csv += ",Patient's: \n"
+            if (row.report_pat.length > 0){
+                row.report_pat.forEach(function (pat) {
+                    csv += ',,' + pat.name + ',"' + pat.address + '",' + pat.age + ',' + pat.gender + ',' + pat.cause + ',' + pat.status + '\n'
+                })
+            }
         });
 
         //display the created CSV data on the web browser   
@@ -220,9 +239,13 @@ export default function usePrint() {
         hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
         hiddenElement.target = '_blank';
 
-        //provide the name for the CSV file to be downloaded  
-        hiddenElement.download = 'Famous Personalities.csv';
-        hiddenElement.click();
+        //provide the name for the CSV file to be downloaded
+        var fn = new Date()
+        hiddenElement.download = 'IRS - '+ fn.toISOString() +'.csv';
+        hiddenElement.click()
+        window.location.reload()
+        // var encodedUri = encodeURI(csv);
+        // window.open(encodedUri);
     }
 
     return {

@@ -39,12 +39,14 @@ onMounted(() => {
     xviewModal2 = Modal.getOrCreateInstance(xviewModalEl2)
     xeditModalEl = $('#xedit-item-modal')
     xeditModal = Modal.getOrCreateInstance(xeditModalEl)
+    getNewNotifications()
+    getNotificationsCount()
 
     getUserDetails()
     setInterval(async () => {
         getNewNotifications()
         getNotificationsCount()
-    }, 30000);
+    }, 15000);
 })
 
 watchEffect(async () => {
