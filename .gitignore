@@ -28,8 +28,4 @@ coverage
 *.sw?
 *.gitignore
 vite.config.js
-<<<<<<< HEAD
 src\composables\base.js
-=======
-src\composables\base.js
->>>>>>> 89b1ed16d12bd404461d5955805498f29b65e9ce
