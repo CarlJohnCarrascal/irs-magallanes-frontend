@@ -63,43 +63,46 @@ export default function useAccount() {
         }
     }
     const loginAccount = async (email, pass, remember) => {
-        try {
-            var data = {
-                'email': email,
-                'password': pass,
-                'remeberme': remember
-            };
 
-            var res = await axios.post('login', data);
-            if (res.data.success) {
-                if (remember) {
-                    var future = new Date();
-                    future.setDate(future.getDate() + 30);
+        var data = {
+            'email': email,
+            'password': pass,
+            'remeberme': remember
+        };
 
-                    document.cookie = `token=${encodeURIComponent(res.data.data.token)}; expires=` + future + ``
-                    document.cookie = `name=${(res.data.data.name)}; expires=` + future + ``
-                    document.cookie = `role=${(res.data.data.role)};expires=` + future + ``
-                    document.cookie = `imagesrc=${(res.data.data.imagesrc)};expires=` + future + ``
-                    document.location.href = "/";
+        var res = await axios.post('login', data)
+            .then((res) => {
+                if (res.data.success) {
+                    if (remember) {
+                        var future = new Date();
+                        future.setDate(future.getDate() + 30);
+
+                        document.cookie = `token=${encodeURIComponent(res.data.data.token)}; expires=` + future + ``
+                        document.cookie = `name=${(res.data.data.name)}; expires=` + future + ``
+                        document.cookie = `role=${(res.data.data.role)};expires=` + future + ``
+                        document.cookie = `imagesrc=${(res.data.data.imagesrc)};expires=` + future + ``
+                        document.location.href = "/";
+                        //router.push('/dashboard')
+                    } else {
+                        document.cookie = `token=${encodeURIComponent(res.data.data.token)};`;// expires=Sun, 14 August 2022 03:11:45 UTC`
+                        document.cookie = `name=${(res.data.data.name)};`;// expires=Sun, 14 August 2022 03:11:45 UTC`
+                        document.cookie = `role=${(res.data.data.role)};`;// expires=Sun, 14 August 2022 03:11:45 UTC`
+                        document.cookie = `imagesrc=${(res.data.data.imagesrc)};`;// expires=Sun, 14 August 2022 03:11:45 UTC`
+                        document.location.href = "/";
+                        //router.push('/login')
+                    }
+                    errors.value = []
                 } else {
-                    document.cookie = `token=${encodeURIComponent(res.data.data.token)};`;// expires=Sun, 14 August 2022 03:11:45 UTC`
-                    document.cookie = `name=${(res.data.data.name)};`;// expires=Sun, 14 August 2022 03:11:45 UTC`
-                    document.cookie = `role=${(res.data.data.role)};`;// expires=Sun, 14 August 2022 03:11:45 UTC`
-                    document.cookie = `imagesrc=${(res.data.data.imagesrc)};`;// expires=Sun, 14 August 2022 03:11:45 UTC`
-                    document.location.href = "/";
+                    //console.log("12" + res.data);
+                    errors.value = [];
+                    isLogin.value = false;
                 }
-            } else {
-                //console.log("12" + res.data);
-                errors.value = res.data.data;
+            })
+            .catch((error) => {
+                //console.log(error);
+                errors.value = error.response.data.data;
                 isLogin.value = false;
-            }
-        } catch (error) {
-            //console.log(error.response.data.data);
-            errors.value = error.response.data.data;
-            isLogin.value = false;
-            //console.log(error);
-        }
-
+            })
     }
     const createAccount = async (role, fname, lname, address, email, pass, pass2) => {
         var data = {
@@ -176,7 +179,6 @@ export default function useAccount() {
     const logoutAccount = async () => {
         //deleteAllCookies();
         await axios.post('logout');
-
         window.location.href = window.location.protocol;
     }
     function deleteAllCookies() {

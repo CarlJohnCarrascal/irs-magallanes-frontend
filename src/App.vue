@@ -1,5 +1,5 @@
 <script setup>
-import { RouterLink, RouterView, useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
+import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
 import FooterCom from './components/FooterCom.vue'
 import TopBarCom from './components/TopBarCom.vue'
 
@@ -7,19 +7,20 @@ import SideBar from './components/SideBar.vue'
 import Logout from './components/Logout.vue'
 import ScrollTopButton from './components/ScrollTopButton.vue'
 
-import { onMounted, onUpdated, watch } from 'vue'
+import { onMounted, watch, ref } from 'vue'
 import useAccount from './composables/account'
-import IncidentHistory from './views/incident/IncidentHistory.vue'
-import Dashboard from './views/DashboardView.vue'
 
 const route = useRoute()
 const router = useRouter()
 const { checkLoginStatus, isLogin } = useAccount();
 //isLogin.value = true;
+const isWaiting = ref(false)
 
 onMounted(async () => {
+  isLogin.value = false
   await activeCurrentPageEvent()
   await checkLoginStatus()
+  isWaiting.value = true
 })
 
 watch(
@@ -118,9 +119,9 @@ async function activeCurrentPageEvent() {
 
 
 <template>
-  <div class="">
+  <div class="" v-if="isWaiting">
     <!-- Page Wrapper -->
-    <div id="wrapper">
+    <div v-if="isLogin" id="wrapper">
         <SideBar ref="toggleEvent" />
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -137,6 +138,9 @@ async function activeCurrentPageEvent() {
         </div>
     </div>
     <!-- End of Page Wrapper -->
+    <div v-if="!isLogin" class="">
+      <RouterView />
+    </div>
 
     <ScrollTopButton />
     <Logout />

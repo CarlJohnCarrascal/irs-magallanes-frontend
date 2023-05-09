@@ -30,14 +30,17 @@ onMounted(async () => {
 <template>
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
+            <RouterLink to="/dashboard" class="row mb-2 mt-4" role="button">
+                <img src="../assets/irs.png" width="100" height="130"/>
+            </RouterLink>
         <!-- Sidebar - Brand -->
-        <RouterLink class="sidebar-brand d-flex align-items-center justify-content-center" to="/dashboard">
-            <div class="sidebar-brand-icon rotate-n-15">
+        <!-- <RouterLink class="sidebar-brand d-flex align-items-center justify-content-center" to="/dashboard">
+
+            <div class="row sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
             <div class="sidebar-brand-text mx-3">IRS - {{ role }}</div>
-        </RouterLink>
+        </RouterLink> -->
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
@@ -74,7 +77,7 @@ onMounted(async () => {
 
         <!-- Nav Item - Logout -->
         <li class="nav-item">
-            <a class="nav-link" data-toggle="modal" data-target="#logoutModal">
+            <a class="nav-link" data-toggle="modal" data-target="#logoutModal" role="button">
                 <i class="fas fa-fw fa-sign-out-alt"></i>
                 <span>Logout</span></a>
         </li>

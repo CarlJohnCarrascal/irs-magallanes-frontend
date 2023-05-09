@@ -260,6 +260,20 @@ const router = createRouter({
         title: 'Activity'
       }
     },
+    {
+      path: '/auth/login',
+      name: 'login',
+      alias: ['/login','/'],
+      component: LoginView,
+      params: { 'title': 'Login' }
+    },
+    {
+      path: '/signup',
+      alias: ['/auth/account/new'],
+      name: 'signup',
+      component: SignUpView,
+      params: { 'title': 'Account' }
+    },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFound },
   ]
 })
@@ -267,7 +281,8 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   if (to.meta.requiredAuth) {
     if (!getCookie2('name')) {
-      window.location.href = "/"
+      //window.location.href = "/"
+      return { name: 'login' }
     }
     if (to.meta.role == 'admin' && getCookie2('role') != to.meta.role) {
       console.log(to.fullPath, to.meta.role)

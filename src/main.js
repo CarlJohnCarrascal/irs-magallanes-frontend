@@ -14,16 +14,20 @@ import './assets/vendor/bootstrap/js/bootstrap.bundle.min.js'
 import './assets/vendor/jquery-easing/jquery.easing.min.js'
 import './assets/js/sb-admin-2.min.js'
 
-await checkLoginStatus()
-const app = null
-if (isLogin.value) {
-    const app = createApp(App)
-    app.use(router)
-    app.mount('#app')
-} else {
-    const app = createApp(App2)
-    app.use(auth)
-    app.mount('#app')
-}
+const app = createApp(App)
+app.use(router)
+app.mount('#app')
+
+// await checkLoginStatus()
+// const app = null
+// if (isLogin.value) {
+//     const app = createApp(App)
+//     app.use(router)
+//     app.mount('#app')
+// } else {
+//     const app = createApp(App2)
+//     app.use(auth)
+//     app.mount('#app')
+// }
 
 

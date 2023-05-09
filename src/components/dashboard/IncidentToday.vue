@@ -1,6 +1,5 @@
 <template>
-    <!-- Report (Today) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4" style="cursor:pointer;" @click="this.$router.replace('/incident/history?f=today')">
+    <RouterLink class="col-xl-3 col-md-6 mb-4" role="button" :to="{ name: 'reporthistory', query: { f: 'today' } }" style="text-decoration: none; color: inherit;">
         <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -15,7 +14,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </RouterLink>
 </template>
 
 <script setup>

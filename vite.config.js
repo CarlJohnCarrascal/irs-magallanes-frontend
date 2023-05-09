@@ -12,7 +12,7 @@ export default defineConfig({
     }
   },
   server: {
-    port: '80',
+    port: '3000',
     host: '192.168.1.253',
     //host: 'www.cajsen.test',
   }
