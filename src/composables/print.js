@@ -1,4 +1,4 @@
-import useUser from "./user";
+ import useUser from "./user";
 import { jsPDF } from "jspdf";
 import useIncident from "./incident";
 

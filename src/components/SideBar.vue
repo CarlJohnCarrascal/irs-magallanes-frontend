@@ -33,14 +33,6 @@ onMounted(async () => {
             <RouterLink to="/dashboard" class="row mb-2 mt-4" role="button">
                 <img src="../assets/irs.png" width="100" height="130"/>
             </RouterLink>
-        <!-- Sidebar - Brand -->
-        <!-- <RouterLink class="sidebar-brand d-flex align-items-center justify-content-center" to="/dashboard">
-
-            <div class="row sidebar-brand-icon rotate-n-15">
-                <i class="fas fa-laugh-wink"></i>
-            </div>
-            <div class="sidebar-brand-text mx-3">IRS - {{ role }}</div>
-        </RouterLink> -->
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
