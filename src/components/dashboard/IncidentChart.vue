@@ -63,11 +63,11 @@ onMounted(async () => {
 
 })
 
-
 </script>
 
 <style scoped>
 #chartbar {
+    min-width: 800px;
     min-height: 500px;
 }
 </style>

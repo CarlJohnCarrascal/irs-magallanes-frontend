@@ -183,7 +183,7 @@ export default function usePrint() {
         }
         doc.text("Leader: " + rl, 15, countp + 7);
         doc.text("Driver: " + rd, 15, countp + 13);
-        doc.text("Member's: " + rm1, 15, countp + 19);
+        doc.text("Member/s: " + rm1, 15, countp + 19);
         doc.text(rm2, 34, countp + 25);
         doc.text(rm3, 34, countp + 31);
         doc.text(rm4, 34, countp + 37);
@@ -223,7 +223,7 @@ export default function usePrint() {
                         row.report_res.member8 + ',' + 
                         row.report_res.member9 + ',' + 
                         row.report_res.member10 + '\n'
-            csv += ",Patient's: \n"
+            csv += ",Patient/s: \n"
             if (row.report_pat.length > 0){
                 row.report_pat.forEach(function (pat) {
                     csv += ',,' + pat.name + ',"' + pat.address + '",' + pat.age + ',' + pat.gender + ',' + pat.cause + ',' + pat.status + '\n'

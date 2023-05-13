@@ -106,33 +106,32 @@
                                                     <!-- Patient Age Name input -->
                                                     <div class="col-sm-3 form-outline mb-2">
                                                         <label class="form-label d-inline-block"
-                                                            for="patient_age">Age</label>
+                                                            for="patient_age">Estimated Age</label>
                                                         <input v-model="patientForm.age" type="number" id="patient_age"
                                                             class="form-control form-control-sm" required />
                                                     </div>
                                                     <!-- Patient Gender Name input -->
                                                     <div class="col-sm-4 form-outline mb-2">
                                                         <label class="form-label d-inline-block"
-                                                            for="patient_gender">Gender</label>
+                                                            for="patient_gender">Sex</label>
                                                         <select v-model="patientForm.gender"
                                                             class="form-select form-select-sm mb-1 text-muted"
                                                             aria-label=".form-select-sm example">
-                                                            <option value="0" selected disabled>Select Gender</option>
+                                                            <option value="0" selected disabled>Select Sex</option>
                                                             <option value="male">Male</option>
                                                             <option value="female">Female</option>
                                                         </select>
                                                     </div>
                                                     <!-- Patient Status input -->
                                                     <div class="col-sm-5 form-outline mb-2">
-                                                        <label class="form-label" for="patient_status">Status</label>
+                                                        <label class="form-label" for="patient_status">Patient Status</label>
                                                         <select v-model="patientForm.status"
                                                             class="form-select form-select-sm mb-1 text-muted"
                                                             aria-label=".form-select-sm example">
-                                                            <option value="0" selected disabled>Select Status</option>
+                                                            <option value="0" selected disabled>Select Patient Status</option>
                                                             <option value="critical">Critical</option>
-                                                            <option value="high">High</option>
-                                                            <option value="medium">Medium</option>
-                                                            <option value="low">Low</option>
+                                                                <option value="major">Major</option>
+                                                                <option value="minor">Minor</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -143,7 +142,7 @@
                                                         <select v-model="patientForm.cause"
                                                             class="form-select form-select-sm mb-1 text-muted"
                                                             aria-label=".form-select-sm example">
-                                                            <option value="0" selected disabled>Select medical type:</option>
+                                                            <option value="0" selected disabled>Select Cause:</option>
                                                             <option v-for="cause in causes" :value="cause.name">{{ cause.name }}</option>
                                                             <!-- <option :value="'other'">Other</option> -->
                                                         </select>
@@ -231,7 +230,7 @@
                                                                 <option v-for="i in 20" :value="'Purok ' + i">Purok {{ i }}</option>
                                                             </select>
                                                             <textarea v-model="accidentDetailForm.specific_location"
-                                                                id="Accident_location" placeholder="speacific location" class="form-control"></textarea>
+                                                                id="Accident_location" placeholder="Specific location" class="form-control"></textarea>
                                                         </div>
 
                                                         <div class="col col-md-6">
@@ -261,9 +260,8 @@
                                                                 aria-label=".form-select-sm example">
                                                                 <option value="" selected disabled>Select Severity</option>
                                                                 <option value="critical">Critical</option>
-                                                                <option value="high">High</option>
-                                                                <option value="medium">Medium</option>
-                                                                <option value="low">Low</option>
+                                                                <option value="major">Major</option>
+                                                                <option value="minor">Minor</option>
                                                             </select>
                                                         </div>
 
@@ -310,7 +308,7 @@
                                                     <!-- Member Name input -->
                                                     <div class="col-md-6 form-outline mb-2">
                                                         <label class="form-label"
-                                                            for="responder_team_member">Member's</label>
+                                                            for="responder_team_member">Member/s</label>
                                                         <input v-model="responderForm.member1" type="text"
                                                             id="responder_team_member" class="form-control" required />
                                                     </div>
@@ -431,7 +429,7 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td colspan="2" class="fs-7 text-muted font-weight-bold">
-                                                                    Responder's Details</td>
+                                                                    Responder Details</td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="fs-8 text-muted font-weight-bold pl-4">Team
@@ -441,7 +439,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td class="fs-8 text-muted font-weight-bold pl-4 align-top">
-                                                                    Member's:
+                                                                    Member/s:
                                                                 </td>
                                                                 <td class="fs-8 text-muted pl-2">
                                                                     {{ responderForm.member1 }} <br v-if="responderForm.member1">
@@ -555,7 +553,7 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td class="fs-7 text-muted font-weight-bold">
-                                                                    Patient's Details</td>
+                                                                    Patient/s Details</td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="fs-8 text-muted font-weight-bold pl-4">

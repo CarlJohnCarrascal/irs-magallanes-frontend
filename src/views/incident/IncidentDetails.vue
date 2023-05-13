@@ -56,7 +56,7 @@
                         <tbody v-if="incident.report_res">
                             <tr>
                                 <td colspan="2" class="fs-7 text-muted font-weight-bold">
-                                    Responder's Details</td>
+                                    Responder Details</td>
                             </tr>
                             <tr>
                                 <td class="fs-8 text-muted font-weight-bold pl-4">Team Leader:
@@ -64,7 +64,7 @@
                                 <td class="fs-8 text-muted pl-2">{{ incident.report_res.leader }}</td>
                             </tr>
                             <tr>
-                                <td class="fs-8 text-muted font-weight-bold pl-4 align-top">Member's:
+                                <td class="fs-8 text-muted font-weight-bold pl-4 align-top">Member/s:
                                 </td>
                                 <td class="fs-8 text-muted pl-2">
                                     <span v-if="incident.report_res.member1">{{ incident.report_res.member1 }}</span> <br
@@ -173,7 +173,7 @@
                         <tbody v-if="incident.report_pat">
                             <tr>
                                 <td class="fs-7 text-muted font-weight-bold">
-                                    Patient's Details</td>
+                                    Patient/s Details</td>
                             </tr>
                             <tr>
                                 <td class="fs-8 text-muted font-weight-bold pl-4">

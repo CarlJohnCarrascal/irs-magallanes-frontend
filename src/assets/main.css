@@ -27,6 +27,15 @@ body{
     color: #91243E;
     /* background-color: #91243E; */
 }
+.s-major {
+    color: #DD4B40;
+    /* background-color: #DD4B40; */
+}
+.s-minor {
+    color: #F18C43;
+    /* background-color: #F18C43; */
+}
+
 .s-high {
     color: #DD4B40;
     /* background-color: #DD4B40; */

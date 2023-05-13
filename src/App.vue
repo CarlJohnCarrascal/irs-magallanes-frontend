@@ -18,14 +18,15 @@ const isWaiting = ref(false)
 
 onMounted(async () => {
   isLogin.value = false
-  await activeCurrentPageEvent()
   await checkLoginStatus()
   isWaiting.value = true
+  await activeCurrentPageEvent()
 })
 
 watch(
   () => route.fullPath,
   async () => {
+    await router.isReady()
     await activeCurrentPageEvent()
   }
 );

@@ -1,8 +1,31 @@
 <template>
     <div>
         <div class="card">
-            <div class="card-header">
-                Alerts Center
+            <div class="card-header d-flex justify-content-between">
+                <span>Alerts Center</span>
+                <div class="gap-1">
+                    <div class="form-check form-sm">
+                    <input @change="loadNotif" class="form-check-input" type="checkbox" v-model="unReadOnly" role="button">
+                    <label class="form-check-label" for="flexCheckChecked" role="button">
+                        Unread
+                    </label>
+                    </div>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" @click="prevPage" aria-label="Previous" role="button">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" role="button">{{ currrentPage }}</a></li>
+                            <li class="page-item">
+                                <a class="page-link" @click="nextPage" aria-label="Next"  role="button">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -18,20 +41,20 @@
                             <div v-for="n in notifications" :key="n.id">
                                 <tr class="d-flex justify-content-between">
                                     <div class="d-flex justify-content-center gap-2">
-                                    <td>
-                                        <div v-if="n.type == 'Report'" class="icon-circle bg-warning mr-2">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                        <div v-if="n.type == 'New User'" class="icon-circle bg-primary mr-2">
-                                            <i class="fas fa-user-plus text-white"></i>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="small text-gray-500">{{ n.created_at }}</div>
-                                        <span v-if="n.isalreadyseen">{{ n.message }}</span>
-                                        <span v-if="!n.isalreadyseen" class="font-weight-bold ">{{ n.message }}</span>
-                                    </td>
-                                        
+                                        <td>
+                                            <div v-if="n.type == 'Report'" class="icon-circle bg-warning mr-2">
+                                                <i class="fas fa-exclamation-triangle text-white"></i>
+                                            </div>
+                                            <div v-if="n.type == 'New User'" class="icon-circle bg-primary mr-2">
+                                                <i class="fas fa-user-plus text-white"></i>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="small text-gray-500">{{ n.created_at }}</div>
+                                            <span v-if="n.isalreadyseen">{{ n.message }}</span>
+                                            <span v-if="!n.isalreadyseen" class="font-weight-bold ">{{ n.message }}</span>
+                                        </td>
+
                                     </div>
                                     <td>
                                         <a @click="viewDetails(n)" class="btn btn-sm btn-primary">View</a>
@@ -69,8 +92,8 @@
                 </div>
             </div>
         </div>
-                <!-- view detail modal -->
-                <div class="modal fade" id="xview1-item2-modal" tabindex="99999" role="dialog" aria-labelledby="myLargeModalLabel"
+        <!-- view detail modal -->
+        <div class="modal fade" id="xview1-item2-modal" tabindex="99999" role="dialog" aria-labelledby="myLargeModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -83,7 +106,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- edit item modal -->
         <div class="modal fade" id="xedit1-item-modal" tabindex="99999" role="dialog" aria-labelledby="myLargeModalLabel"
             aria-hidden="true">
@@ -124,6 +147,8 @@ let title = ref([])
 const notif = ref([])
 const selectedUser = ref([])
 const selectedItemRef = ref([])
+const currrentPage = ref(1)
+const unReadOnly = ref()
 
 var xviewModalEl = ""
 var xviewModal = ""
@@ -140,39 +165,54 @@ onMounted(async () => {
     xeditModalEl = $('#xedit1-item-modal')
     xeditModal = Modal.getOrCreateInstance(xeditModalEl)
 
-    await getNotifications(false)
+    await getNotifications(unReadOnly.value, currrentPage.value)
 })
+
+async function loadNotif(){
+    await getNotifications(unReadOnly.value, currrentPage.value)
+}
+
+async function prevPage(){
+    if (currrentPage.value > 1){
+        currrentPage.value -= 1
+        await getNotifications(unReadOnly.value, currrentPage.value)
+    }
+}
+
+async function nextPage(){
+    currrentPage.value += 1
+    await getNotifications(unReadOnly.value, currrentPage.value)
+}
 
 async function viewDetails(n) {
 
-if (n.type == 'New User') {
-    await getUser(n.notif_id)
-    selectedUser.value = user.value
-    xviewModal.show()
+    if (n.type == 'New User') {
+        await getUser(n.notif_id)
+        selectedUser.value = user.value
+        xviewModal.show()
+    }
+    if (n.type == 'Report') {
+        selectedItemRef.value = n.notif_id
+        xviewModal2.show()
+    }
+    n.isalreadyseen = true;
+    await markSeen(n.id)
 }
-if (n.type == 'Report') {
-    selectedItemRef.value = n.notif_id
-    xviewModal2.show()
-}
-n.isalreadyseen = true;
-await markSeen(n.id)
-}
-
 
 async function onEditItem() {
-xviewModal2.hide()
-xeditModal.show()
+    xviewModal2.hide()
+    xeditModal.show()
 }
 
 async function onConfirmDelete() {
 
-await deleteIncident(selectedItemRef.value)
-xviewModal2.hide()
-//dt.draw()
+    await deleteIncident(selectedItemRef.value)
+    xviewModal2.hide()
+    //dt.draw()
 }
 
 async function onChangeStatus(d) {
-await updateIncidentStatus(d, selectedItemRef.value)
+    await updateIncidentStatus(d, selectedItemRef.value)
 }
 </script>
 

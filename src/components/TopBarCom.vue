@@ -31,6 +31,8 @@ var xviewModal2 = ""
 var xeditModalEl = ""
 var xeditModal = ""
 
+const onwait = ref([false])
+
 onMounted(() => {
 
     xviewModalEl = $('#xview-item-modal')
@@ -44,8 +46,11 @@ onMounted(() => {
 
     getUserDetails()
     setInterval(async () => {
-        getNewNotifications()
-        getNotificationsCount()
+        if (!onwait.value) {
+            onwait.value = true
+            getNewNotifications()
+            getNotificationsCount()
+        }
     }, 15000);
 })
 
@@ -56,6 +61,10 @@ watchEffect(async () => {
 watch(() => nnotifications.value,
     async (val) => {
         notif.value = val
+        onwait.value = false
+        // notif.value.forEach(function (n) {
+        //     console.log(n)
+        // })
     }
 );
 

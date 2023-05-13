@@ -8,16 +8,16 @@ export default function useNotification() {
     const nerrors = ref([])
     const count = ref([])
 
-    const getNotifications = async (f) => {
+    const getNotifications = async (f, p) => {
         await axios
-            .get('notifications/?unread='+ f)
+            .get('notifications/?unread='+ f + '&p='+ p)
             .then(async (e) => {
                 nerrors.value = []
-                console.log("then", e)
+                //console.log("then", e)
                 notifications.value = e.data.data
             })
             .catch(async (err) => {
-                console.log("catch", err)
+                //console.log("catch", err)
                 nerrors.value = err.response.data
             })
     }
@@ -31,7 +31,7 @@ export default function useNotification() {
                 nnotifications.value = e.data.data
             })
             .catch(async (err) => {
-                console.log("catch", err)
+                //console.log("catch", err)
                 nerrors.value = err.response.data
             })
     }
@@ -46,7 +46,7 @@ export default function useNotification() {
             })
             .catch(async (err) => {
                 nerrors.value = err.response.data
-                console.log(err.response.data)
+                //console.log(err.response.data)
             })
     }
     const markSeen = async (id) => {
@@ -57,7 +57,7 @@ export default function useNotification() {
             })
             .catch(async (err) => {
                 nerrors.value = err.response.data
-                console.log(err.response.data)
+                //console.log(err.response.data)
             })
     }
 

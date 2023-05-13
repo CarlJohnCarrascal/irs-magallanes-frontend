@@ -51,6 +51,9 @@
                         <p class="fs-7">
                             Are you sure you want to delete this account?
                         </p>
+                        <p class="fs-6 text-danger">
+                            Deleting this will also delete all report made by this user!
+                        </p>
 
                         <p class="fs-8">
                             {{ selectedUser.fullname }}
